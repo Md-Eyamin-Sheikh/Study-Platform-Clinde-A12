@@ -1,12 +1,11 @@
-# React + Vite
+https://i.postimg.cc/7Z8pmZfc/pexels-anastasia-shuraeva-8466903.jpg
+https://i.postimg.cc/jjCmjw9D/pexels-diego-romero-471613950-19147326.jpg
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg
 
-Currently, two official plugins are available:
+https://i.postimg.cc/9MC9pZhM/pexels-kimmi-jun-201206578-18506745.jpg
+https://i.postimg.cc/fy6THQ9K/pexels-green-odette-232224115-32292148.jpg
+https://i.postimg.cc/c18KnFYm/pexels-chuchuphinh-1164572.jpg
+https://i.postimg.cc/vTRZhd9v/pang-yuhao-kd5cxw-ZOK4-unsplash.jpg
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+https://i.postimg.cc/76FpdHKf/pexels-max-fischer-5212336.jpg
