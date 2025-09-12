@@ -62,6 +62,8 @@ export default function RegisterPage() {
     return hasUppercase && hasLowercase && hasMinLength;
   };
 
+  // console.log(import.meta.env.VITE_IMGBB_API)
+
   // handle form submit
   const handleRegister = async (e) => {
     e.preventDefault();

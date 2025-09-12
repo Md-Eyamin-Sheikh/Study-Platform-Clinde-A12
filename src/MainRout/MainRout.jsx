@@ -6,8 +6,8 @@ import Footer from '../Component/Footer';
 const MainRout = () => {
     return (
         <div>
-            <Navbar/>
-            <Outlet/>
+            <Navbar className="mb-20px"/>
+            <Outlet className='pt-20'/>
             <Footer/>
             
         </div>
