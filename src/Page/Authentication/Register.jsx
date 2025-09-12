@@ -6,25 +6,51 @@ import CreatAnimation from "../../Loti-animesun/Creat-account.json";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { auth } from "../../Firbas/Firbas";
+import { auth, db } from "../../Firbas/Firbas";
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    photo: "",
+    photo: null,
     password: "",
+    role: "student",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // handle input changes
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const { name, value, files } = e.target;
+    if (name === "photo") {
+      setFormData({
+        ...formData,
+        photo: files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  // upload photo to imgbb
+  const uploadToImgbb = async (file) => {
+    const formDataImg = new FormData();
+    formDataImg.append("image", file);
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API}`, {
+      method: "POST",
+      body: formDataImg,
     });
+    const data = await response.json();
+    if (data.success) {
+      return data.data.display_url;
+    } else {
+      throw new Error("Image upload failed");
+    }
   };
 
   // password validation function
@@ -41,7 +67,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
 
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password || !formData.photo) {
       Swal.fire("Error", "All fields are required!", "error");
       setLoading(false);
       return;
@@ -58,13 +84,27 @@ export default function RegisterPage() {
     }
 
     try {
+      // Upload photo to imgbb
+      const photoURL = await uploadToImgbb(formData.photo);
+
+      // Create user
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       await updateProfile(userCredential.user, {
         displayName: formData.name,
-        photoURL: formData.photo,
+        photoURL: photoURL,
       });
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        name: formData.name,
+        email: formData.email,
+        photoURL: photoURL,
+        role: formData.role,
+        createdAt: new Date(),
+      });
+
       Swal.fire("Success", "Registration successful!", "success");
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
@@ -75,9 +115,20 @@ export default function RegisterPage() {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Save user data to Firestore with default role student
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "student",
+        createdAt: new Date(),
+      });
+
       Swal.fire("Success", "Google registration successful!", "success");
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
@@ -132,19 +183,34 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Profile Picture URL */}
+            {/* Profile Picture */}
             <div>
               <label className="block text-gray-900 font-medium mb-1">
-                Profile Picture URL
+                Profile Picture
               </label>
               <input
-                type="url"
+                type="file"
                 name="photo"
-                value={formData.photo}
                 onChange={handleChange}
-                placeholder="https://example.com/photo.jpg"
-                className="w-full px-4 py-3 rounded-xl border text-gray-950  focus:ring-2 focus:ring-green-500 focus:outline-none"
+                accept="image/*"
+                className="w-full px-4 py-3 rounded-xl border text-gray-950 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                required
               />
+            </div>
+
+            {/* Role */}
+            <div>
+              <label className="block text-gray-900 font-medium mb-1">Role</label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border text-gray-950 focus:ring-2 focus:ring-green-500 focus:outline-none"
+              >
+                <option value="student">Student</option>
+                <option value="tutor">Tutor</option>
+                <option value="admin">Administrator</option>
+              </select>
             </div>
 
             {/* Password */}
@@ -195,7 +261,7 @@ export default function RegisterPage() {
           {/* Login Link */}
           <p className="text-center text-gray-900 mt-6">
             Already have an account?{" "}
-            <Link to="/loginpage" className="text-green-600 font-semibold hover:underline">
+            <Link to="/login" className="text-green-600 font-semibold hover:underline">
               Login
             </Link>
           </p>
