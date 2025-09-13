@@ -18,7 +18,7 @@ const ImageSlider = () => {
   ];
 
   return (
-    <div className="w-full bg-amber-50 mx-auto pt-12">
+    <div className="w-full bg-amber-50 mx-auto ">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}

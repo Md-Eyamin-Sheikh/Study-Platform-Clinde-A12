@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Clock,
   User,
@@ -8,7 +9,9 @@ import {
   ChevronRight,
   Filter,
   Search,
+
 } from 'lucide-react';
+
 
 const StudySessionsPlatform = () => {
   const [currentPage, setCurrentPage] = useState('sessions');
@@ -67,20 +70,20 @@ const StudySessionsPlatform = () => {
     setCurrentPage('details');
   };
 
-  // const handleBookSession = (session) => {
-  //   if (!isLoggedIn || userRole === 'admin' || userRole === 'tutor') {
-  //     return;
-  //   }
+  const handleBookSession = (session) => {
+    if (!isLoggedIn || userRole === 'admin' || userRole === 'tutor') {
+      return;
+    }
 
-  //   if (session.registrationFee > 0) {
-  //     // Redirect to payment page
-  //     setCurrentPage('payment');
-  //   } else {
-  //     // Book directly for free sessions
-  //     // Here you would normally save to "bookedSession" collection
-  //     alert(`Successfully booked: ${session.title}!`);
-  //   }
-  // };
+    if (session.registrationFee > 0) {
+      // Redirect to payment page
+      setCurrentPage('payment');
+    } else {
+      // Book directly for free sessions
+      // Here you would normally save to "bookedSession" collection
+      alert(`Successfully booked: ${session.title}!`);
+    }
+  };
 
   const SessionCard = ({ session }) => {
     const status = getSessionStatus(session);
@@ -132,13 +135,12 @@ const StudySessionsPlatform = () => {
           </div>
 
           {/* Read More Button */}
-          <button
-            onClick={() => handleReadMore(session)}
+          <Link to={`/details/${session._id}`}
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group"
           >
             Read More
             <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </Link>
         </div>
       </div>
     );
@@ -216,7 +218,7 @@ const StudySessionsPlatform = () => {
       {currentPage === 'details' && selectedSession && (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
           <div className="max-w-7xl mx-auto px-4">
-            <CardDetels session={selectedSession} reviews={reviews} isLoggedIn={isLoggedIn} userRole={userRole} bookedSessions={[]} handleBookSession={handleBookSession} setCurrentPage={setCurrentPage} />
+            <SessionDetails session={selectedSession} reviews={reviews} isLoggedIn={isLoggedIn} userRole={userRole} bookedSessions={[]} handleBookSession={handleBookSession} setCurrentPage={setCurrentPage} />
           </div>
         </div>
       )}

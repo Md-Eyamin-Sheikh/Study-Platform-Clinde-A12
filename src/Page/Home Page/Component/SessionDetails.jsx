@@ -1,11 +1,129 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate ,Link} from 'react-router-dom';
+import {
+  Calendar,
+  Clock,
+  User,
+  Star,
+  DollarSign,
+  BookOpen,
+  Users,
+  MapPin,
+  Award,
+  ArrowLeft,
+  CreditCard,
+  CheckCircle,
+  XCircle,
+  MessageSquare
+} from 'lucide-react';
 
-const SessionDetails = () => {
-    const SessionDetails = ({ session }) => {
-    const status = getSessionStatus(session);
-    const isOngoing = status === 'ongoing';
-    const canBook = isLoggedIn && userRole === 'student' && isOngoing;
-    const sessionReviews = mockReviews.filter(review => review.studySessionId === session._id);
+const DetalsPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [session, setSession] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState('student');
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/data/${id}`);
+        const data = await response.json();
+        setSession(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching session:', error);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchSession();
+    }
+  }, [id]);
+
+  const handleBookSession = (session) => {
+    if (!isLoggedIn || userRole === 'admin' || userRole === 'tutor') {
+      return;
+    }
+
+    if (session.registrationFee > 0) {
+      alert('Redirect to payment page');
+    } else {
+      alert(`Successfully booked: ${session.title}!`);
+    }
+  };
+
+  const setCurrentPage = (page) => {
+    if (page === 'sessions') {
+      navigate('/');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-xl">Loading session details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden p-8 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Session not found</h2>
+            <p className="text-gray-600">The session you are looking for does not exist or could not be loaded.</p>
+            <Link to="/"
+              onClick={() => setCurrentPage('sessions')}
+              className="mt-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Back to Sessions
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const SessionDetails = ({ session, reviews, isLoggedIn, userRole, bookedSessions, handleBookSession, setCurrentPage }) => {
+  if (!session) {
+    return (
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden p-8 text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Session not found</h2>
+        <p className="text-gray-600">The session you are looking for does not exist or could not be loaded.</p>
+        <button
+          onClick={() => setCurrentPage && setCurrentPage('sessions')}
+          className="mt-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group"
+        >
+          <ArrowLeft className="w-5 h-5 mr-2" />
+          Back to Sessions
+        </button>
+      </div>
+    );
+  }
+
+  const getSessionStatus = (session) => {
+    if (!session || !session.registrationStartDate || !session.registrationEndDate) {
+      return 'closed';
+    }
+    const now = new Date();
+    const regStart = new Date(session.registrationStartDate);
+    const regEnd = new Date(session.registrationEndDate);
+
+    return now >= regStart && now <= regEnd ? 'ongoing' : 'closed';
+  };
+
+  const status = getSessionStatus(session);
+  const isOngoing = status === 'ongoing';
+  const canBook = isLoggedIn && userRole === 'student' && isOngoing && !bookedSessions.includes(session.id);
+  const sessionReviews = reviews.filter(review => review.studySessionId === session.id || review.studySessionId === session._id);
 
     return (
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -214,8 +332,17 @@ const SessionDetails = () => {
           </div>
         </div>
       </div>
-    );
+  );
+
   };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+      <div className="max-w-7xl mx-auto px-4">
+        <SessionDetails session={session} reviews={reviews} isLoggedIn={isLoggedIn} userRole={userRole} bookedSessions={[]} handleBookSession={handleBookSession} setCurrentPage={setCurrentPage} />
+      </div>
+    </div>
+  );
 };
 
-export default SessionDetails;
+export default DetalsPage;
