@@ -34,13 +34,7 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/tutors" className="text-gray-700 hover:text-indigo-600">
-            Tutors
-          </Link>
-          <Link
-            to="/sessions"
-            className="text-gray-700 hover:text-indigo-600"
-          >
+          <Link to="/sessions" className="text-gray-700 hover:text-indigo-600">
             Study Sessions
           </Link>
 
@@ -120,12 +114,6 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           className="md:hidden bg-white shadow-lg p-4 space-y-4"
         >
-          <Link
-            to="/tutors"
-            className="block text-gray-700 hover:text-indigo-600"
-          >
-            Tutors
-          </Link>
           <Link
             to="/sessions"
             className="block text-gray-700 hover:text-indigo-600"

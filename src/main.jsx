@@ -9,11 +9,14 @@ import Register from './Page/Authentication/Register.jsx';
 import LoginPage from './Page/Authentication/LoginPage.jsx';
 // import Dashboard from './Page/Dashboard.jsx';
 // import AdminPanel from './Page/AdminPanel.jsx';
+// import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
 
 import AuthProvider from './providers/AuthProvider.jsx';
-import ProtectedRoute from './Component/ProtectedRoute.jsx';
-import HomePage from './Page/HomePage.jsx';
+// import ProtectedRoute from './Component/ProtectedRoute.jsx';
+import HomePage from './Page/Home Page/HomePage.jsx';
 import MainRout from './MainRout/MainRout.jsx';
+import DetalsPage from './Page/Home Page/Component/DetalsPage.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,15 @@ const router = createBrowserRouter([
         path: '/register',
         element: <Register/>
       },
+      {
+        path: "/details",
+        element:<DetalsPage/>
+      },
+      
+      // {
+      //   path: "/sessions",
+      //   element: <StudySessionsPlatform />
+      // },
       // {
       //   path: "/dashboard",
       //   element: (
