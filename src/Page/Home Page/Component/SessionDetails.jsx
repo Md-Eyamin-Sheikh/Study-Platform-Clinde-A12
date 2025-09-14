@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../../../providers/AuthProvider';
 import {
   Calendar,
   Clock,
@@ -20,6 +21,7 @@ import {
 const DetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [session, setSession] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [bookedSessions, setBookedSessions] = useState([]);
@@ -56,10 +58,9 @@ const DetailsPage = () => {
         }
 
         // Fetch booked sessions for current user
-        if (isLoggedIn) {
+        if (isLoggedIn && user?.email) {
           try {
-            const userEmail = 'current-user@email.com'; // Replace with actual user email from auth context
-            const bookedResponse = await fetch(`http://localhost:5000/api/booked-sessions/${userEmail}`);
+            const bookedResponse = await fetch(`http://localhost:5000/api/booked-sessions/${user.email}`);
             if (bookedResponse.ok) {
               const bookedData = await bookedResponse.json();
               if (bookedData.success) {
@@ -93,7 +94,7 @@ const DetailsPage = () => {
 
     try {
       const bookingData = {
-        studentEmail: 'current-user@email.com', // Replace with actual logged-in user email
+        studentEmail: user?.email,
         studySessionId: session._id,
         tutorEmail: session.tutorEmail,
         sessionTitle: session.title,
