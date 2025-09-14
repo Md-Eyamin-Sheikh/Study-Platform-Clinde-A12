@@ -14,15 +14,11 @@ import {
 
 
 const StudySessionsPlatform = () => {
-  const [currentPage, setCurrentPage] = useState('sessions');
-  const [selectedSession, setSelectedSession] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [studySessions, setStudySessions] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
-  const [userRole, setUserRole] = useState('student');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [showAll, setShowAll] = useState(false);
 
   // Fetch study sessions from API
   useEffect(() => {
@@ -62,28 +58,11 @@ const StudySessionsPlatform = () => {
     return matchesSearch && matchesCategory;
   });
 
+  // Show only 6 sessions by default
+  const displayedSessions = showAll ? filteredSessions : filteredSessions.slice(0, 6);
+
   // Get unique categories
   const categories = ['all', ...new Set(studySessions.map(session => session.category))];
-
-  const handleReadMore = (session) => {
-    setSelectedSession(session);
-    setCurrentPage('details');
-  };
-
-  const handleBookSession = (session) => {
-    if (!isLoggedIn || userRole === 'admin' || userRole === 'tutor') {
-      return;
-    }
-
-    if (session.registrationFee > 0) {
-      // Redirect to payment page
-      setCurrentPage('payment');
-    } else {
-      // Book directly for free sessions
-      // Here you would normally save to "bookedSession" collection
-      alert(`Successfully booked: ${session.title}!`);
-    }
-  };
 
   const SessionCard = ({ session }) => {
     const status = getSessionStatus(session);
@@ -114,29 +93,29 @@ const StudySessionsPlatform = () => {
 
           {/* Session Info */}
           <div className="space-y-2 mb-4">
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-950">
               <User className="w-4 h-4 mr-2" />
               <span className="font-medium">{session.tutorName}</span>
             </div>
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-950">
               <Star className="w-4 h-4 mr-2 text-yellow-400" />
               <span>{session.averageRating}/5 ({session.totalReviews} reviews)</span>
             </div>
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-900">
               <Clock className="w-4 h-4 mr-2" />
               <span>{session.sessionDuration}</span>
             </div>
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-900">
               <DollarSign className="w-4 h-4 mr-2" />
               <span className={session.registrationFee === 0 ? 'text-green-600 font-semibold' : ''}>
-                {session.registrationFee === 0 ? 'Free' : `$${session.registrationFee}`}
+                {session.registrationFee === 0 ? 'Free' : `${session.registrationFee}`}
               </span>
             </div>
           </div>
 
           {/* Read More Button */}
           <Link to={`/details/${session._id}`}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group"
+            className="w-full  bg-green-500  text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center group"
           >
             Read More
             <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -146,9 +125,7 @@ const StudySessionsPlatform = () => {
     );
   };
 
-  
-
-  const SessionsList = () => (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
@@ -157,7 +134,7 @@ const StudySessionsPlatform = () => {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Available Study Sessions
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-800 max-w-3xl mx-auto">
               Join expert-led study sessions and accelerate your learning journey with our collaborative platform
             </p>
           </div>
@@ -165,21 +142,21 @@ const StudySessionsPlatform = () => {
           {/* Search and Filter */}
           <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-900 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search sessions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full pl-10 pr-4 text-black py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
             <div className="relative">
-              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-900 w-5 h-5" />
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className="pl-10 pr-8 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none bg-white min-w-[200px]"
+                className="pl-10 pr-8 py-3 border border-gray-300 rounded-xl text-black focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none bg-white min-w-[200px]"
               >
                 {categories.map(category => (
                   <option key={category} value={category}>
@@ -195,10 +172,22 @@ const StudySessionsPlatform = () => {
       {/* Sessions Grid */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredSessions.map(session => (
+          {displayedSessions.map(session => (
             <SessionCard key={session._id} session={session} />
           ))}
         </div>
+
+        {/* Show All Button */}
+        {filteredSessions.length > 6 && (
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="px-8 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all duration-300"
+            >
+              {showAll ? 'Show Less' : `Show All Courses (${filteredSessions.length})`}
+            </button>
+          </div>
+        )}
 
         {filteredSessions.length === 0 && (
           <div className="text-center py-16">
@@ -208,20 +197,6 @@ const StudySessionsPlatform = () => {
           </div>
         )}
       </div>
-    </div>
-  );
-
-  // Main render logic
-  return (
-    <div className="font-sans">
-      {currentPage === 'sessions' && <SessionsList />}
-      {currentPage === 'details' && selectedSession && (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
-          <div className="max-w-7xl mx-auto px-4">
-            <SessionDetails session={selectedSession} reviews={reviews} isLoggedIn={isLoggedIn} userRole={userRole} bookedSessions={[]} handleBookSession={handleBookSession} setCurrentPage={setCurrentPage} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

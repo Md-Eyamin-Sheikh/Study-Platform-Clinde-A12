@@ -55,7 +55,7 @@ export default function LoginPage() {
       }
 
       const token = await user.getIdToken();
-      console.log("JWT Token:", token); // For demonstration
+      console.log("JWT Token:", token); 
       Swal.fire("Success", "Google login successful!", "success");
       navigate("/dashboard");
     } catch (error) {

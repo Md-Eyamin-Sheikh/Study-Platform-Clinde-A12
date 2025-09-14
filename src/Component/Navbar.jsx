@@ -25,16 +25,16 @@ const Navbar = () => {
   
 
   return (
-    <nav className="bg-white shadow-md fixed w-full z-50">
+    <nav className="bg-green-50 to-green-100 shadow-md fixed w-full z-50">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-indigo-600">
+        <Link to="/" className="text-2xl font-bold text-green-600">
           StudyHub
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link to="/sessions" className="text-gray-700 hover:text-indigo-600">
+          <Link to="/sessions" className="text-gray-900 hover:text-green-600">
             Study Sessions
           </Link>
 
@@ -42,13 +42,13 @@ const Navbar = () => {
              <>
                <motion.Link to='/login'
                  whileHover={{ scale: 1.05 }}
-                 className="px-4 py-2 text-indigo-600 border border-indigo-600 rounded-lg hover:bg-indigo-50"
+                 className="px-4 py-2 text-green-600 border border-green-600 rounded-lg hover:bg-indigo-50"
                >
                  Login
                </motion.Link>
                <Link
                  to="/register"
-                 className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700"
+                 className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
                >
                  Sign Up
                </Link>
@@ -83,7 +83,7 @@ const Navbar = () => {
                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                    role === 'admin' ? 'bg-red-100 text-red-800' :
                    role === 'tutor' ? 'bg-green-100 text-green-800' :
-                   'bg-blue-100 text-blue-800'
+                   'bg-blue-100 text-green-800'
                  }`}>
                    {role}
                  </span>
@@ -116,7 +116,7 @@ const Navbar = () => {
         >
           <Link
             to="/sessions"
-            className="block text-gray-700 hover:text-indigo-600"
+            className="block text-gray-700 hover:text-green-600"
           >
             Study Sessions
           </Link>
@@ -124,13 +124,13 @@ const Navbar = () => {
           {!user ? (
              <>
                <Link to="/login"
-                 className="block w-full px-4 py-2 text-indigo-600 border border-indigo-600 rounded-lg text-center hover:bg-indigo-50"
+                 className="block w-full px-4 py-2 text-green-600 border border-green-600 rounded-lg text-center hover:bg-indigo-50"
                >
                  Login
                </Link>
                <Link
                  to="/register"
-                 className="block w-full px-4 py-2 bg-indigo-600 text-white rounded-lg text-center shadow hover:bg-indigo-700"
+                 className="block w-full px-4 py-2 bg-green-600 text-white rounded-lg text-center shadow hover:bg-green-700"
                >
                  Sign Up
                </Link>
@@ -157,7 +157,7 @@ const Navbar = () => {
                      <img
                        src={user.photoURL}
                        alt="Profile"
-                       className="w-10 h-10 rounded-full border-2 border-indigo-600"
+                       className="w-10 h-10 rounded-full border-2 border-green-600"
                      />
                    )}
                    <div className="text-left">
@@ -167,7 +167,7 @@ const Navbar = () => {
                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                        role === 'admin' ? 'bg-red-100 text-red-800' :
                        role === 'tutor' ? 'bg-green-100 text-green-800' :
-                       'bg-blue-100 text-blue-800'
+                       'bg-blue-100 text-green-800'
                      }`}>
                        {role}
                      </span>
