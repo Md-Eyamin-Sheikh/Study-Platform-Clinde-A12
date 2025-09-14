@@ -13,7 +13,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-green-400 via-green-800 to-green-500 text-white mt-12 relative overflow-hidden">
+    <footer className="bg-gradient-to-br from-green-400 via-green-800 to-green-500 text-white relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-green-600/10 to-green-500/10"></div>
       <div className="container mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
         {/* Logo + About */}
