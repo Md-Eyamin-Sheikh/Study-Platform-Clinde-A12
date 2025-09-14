@@ -147,8 +147,8 @@ const DetailsPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden p-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Session not found</h2>
-            <p className="text-gray-600">The session you are looking for does not exist or could not be loaded.</p>
+            <h2 className="text-2xl font-bold text-whait mb-4">Session not found</h2>
+            <p className="">The session you are looking for does not exist or could not be loaded.</p>
             <Link to="/"
               className="inline-block mt-6  text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
             >
@@ -182,11 +182,11 @@ const DetailsPage = () => {
               Back to Sessions
             </button>
             
-            <h1 className="text-3xl font-bold mb-4">{session.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{session.title}</h1>
             <div className="flex items-center space-x-6">
               <div className="flex items-center">
-                <User className="w-5 h-5 mr-2" />
-                <span className="text-lg">{session.tutorName}</span>
+                <User className="w-5 h-5 mr-2 text-gray-900" />
+                <span className="text-lg text-gray-900">{session.tutorName}</span>
               </div>
               <div className="flex items-center">
                 <Star className="w-5 h-5 mr-2 text-yellow-300" />
@@ -216,7 +216,7 @@ const DetailsPage = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Session Information</h3>
                 
                 <div className="flex items-center">
-                  <Calendar className="w-5 h-5 mr-3 text-blue-600" />
+                  <Calendar className="w-5 h-5 mr-3 text-green-600" />
                   <div>
                     <p className="text-sm text-gray-900">Registration Period</p>
                     <p className="font-semibold text-gray-900">
@@ -226,7 +226,7 @@ const DetailsPage = () => {
                 </div>
 
                 <div className="flex items-center">
-                  <Clock className="w-5 h-5 mr-3 text-blue-600" />
+                  <Clock className="w-5 h-5 mr-3 text-green-600" />
                   <div>
                     <p className="text-sm text-gray-900">Class Duration</p>
                     <p className="font-semibold text-gray-900">
@@ -236,15 +236,15 @@ const DetailsPage = () => {
                 </div>
 
                 <div className="flex items-center">
-                  <BookOpen className="w-5 h-5 mr-3 text-blue-600" />
+                  <BookOpen className="w-5 h-5 mr-3 text-green-600" />
                   <div>
-                    <p className="text-sm text-gray-500">Duration</p>
-                    <p className="font-semibold">{session.sessionDuration}</p>
+                    <p className="text-sm text-gray-800">Duration</p>
+                    <p className="font-semibold text-gray-900">{session.sessionDuration}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center">
-                  <MapPin className="w-5 h-5 mr-3 text-blue-600" />
+                  <MapPin className="w-5 h-5 mr-3 text-green-600" />
                   <div>
                     <p className="text-sm text-gray-800">Location</p>
                     <p className="font-semibold text-gray-900">{session.location}</p>
@@ -266,13 +266,13 @@ const DetailsPage = () => {
                 </div>
 
                 <div className="flex items-center">
-                  <Users className="w-5 h-5 mr-3 text-blue-600" />
+                  <Users className="w-5 h-5 mr-3 text-green-600" />
                   <div>
                     <p className="text-sm text-gray-800">Enrollment</p>
                     <p className="font-semibold text-gray-900">{session.currentStudents}/{session.maxStudents} students</p>
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div 
-                        className="bg-blue-600 h-2 text-gray-900 rounded-full transition-all duration-300"
+                        className="bg-green-600 h-2 text-gray-900 rounded-full transition-all duration-300"
                         style={{ width: `${(session.currentStudents / session.maxStudents) * 100}%` }}
                       ></div>
                     </div>
@@ -310,12 +310,12 @@ const DetailsPage = () => {
                 >
                   {session.registrationFee > 0 ? (
                     <>
-                      <CreditCard className="w-6 h-6 mr-2" />
+                      <CreditCard className="w-6 h-6 mr-2 text-gray-900" />
                       Book Now - ${session.registrationFee}
                     </>
                   ) : (
                     <>
-                      <CheckCircle className="w-6 h-6 mr-2" />
+                      <CheckCircle className="w-6 h-6 text-gray-900 mr-2" />
                       Book Now - Free
                     </>
                   )}
@@ -337,7 +337,7 @@ const DetailsPage = () => {
             {/* Reviews Section */}
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <MessageSquare className="w-6 h-6 mr-3 text-blue-600" />
+                <MessageSquare className="w-6 h-6 mr-3 text-green-600" />
                 Student Reviews ({sessionReviews.length})
               </h3>
               
@@ -347,7 +347,7 @@ const DetailsPage = () => {
                     <div key={review._id} className="bg-gray-50 rounded-xl p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                          <div className="w-10 h-10 bg-green-700 rounded-full flex items-center justify-center text-white font-bold">
                             {review.studentName.charAt(0)}
                           </div>
                           <div className="ml-3">
