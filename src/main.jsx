@@ -13,6 +13,7 @@ import AuthProvider from './providers/AuthProvider.jsx';
 import HomePage from './Page/Home Page/HomePage.jsx';
 import MainRout from './MainRout/MainRout.jsx';
 import DetalsPage from './Page/Home Page/Component/SessionDetails.jsx';
+import PaymentPage from './Page/PaymentPage.jsx';
 
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/details/:id",
         element:<DetalsPage/>
+      },
+      {
+        path: "/payment",
+        element: <PaymentPage/>
       },
       
       // {

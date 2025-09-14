@@ -55,11 +55,24 @@ const DetailsPage = () => {
           setSession(sessionData);
         }
 
+        // Fetch booked sessions for current user
+        if (isLoggedIn) {
+          try {
+            const userEmail = 'current-user@email.com'; // Replace with actual user email from auth context
+            const bookedResponse = await fetch(`http://localhost:5000/api/booked-sessions/${userEmail}`);
+            if (bookedResponse.ok) {
+              const bookedData = await bookedResponse.json();
+              if (bookedData.success) {
+                setBookedSessions(bookedData.bookedSessions);
+              }
+            }
+          } catch (error) {
+            console.error('Error fetching booked sessions:', error);
+          }
+        }
+
         // Mock reviews data since API might not exist
         setReviews([]);
-
-        // Mock booked sessions
-        setBookedSessions([]);
 
         setLoading(false);
       } catch (error) {
@@ -79,21 +92,22 @@ const DetailsPage = () => {
     }
 
     try {
-      if (session.registrationFee > 0) {
-        // Redirect to payment page for paid sessions
-        alert('Redirecting to payment page...');
-        // navigate(`/payment/${session._id}`);
-      } else {
-        // Book free session directly
-        const bookingData = {
-          studentEmail: 'current-user@email.com', // Get from auth context
-          studySessionId: session._id,
-          tutorEmail: session.tutorEmail,
-          sessionTitle: session.title,
-          bookingDate: new Date().toISOString()
-        };
+      const bookingData = {
+        studentEmail: 'current-user@email.com', // Replace with actual logged-in user email
+        studySessionId: session._id,
+        tutorEmail: session.tutorEmail,
+        sessionTitle: session.title,
+        registrationFee: session.registrationFee
+      };
 
-        const response = await fetch('http://localhost:5000/api/booked-sessions', {
+      if (session.registrationFee > 0) {
+        // For paid sessions, redirect to payment page
+        // Store booking data in localStorage for payment page
+        localStorage.setItem('pendingBooking', JSON.stringify(bookingData));
+        window.location.href = `/payment?sessionId=${session._id}&fee=${session.registrationFee}`;
+      } else {
+        // For free sessions, book directly
+        const response = await fetch('http://localhost:5000/api/book-session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -101,11 +115,13 @@ const DetailsPage = () => {
           body: JSON.stringify(bookingData)
         });
 
-        if (response.ok) {
+        const result = await response.json();
+
+        if (result.success) {
           alert(`Successfully booked: ${session.title}!`);
           setBookedSessions([...bookedSessions, session._id]);
         } else {
-          alert('Failed to book session. Please try again.');
+          alert(result.message || 'Failed to book session. Please try again.');
         }
       }
     } catch (error) {
