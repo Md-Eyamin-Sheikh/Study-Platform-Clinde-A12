@@ -5,7 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Swal from 'sweetalert2';
 
-const stripePromise = loadStripe(' import.meta.env.VITE_API_BASE_URL');
+const stripePromise = loadStripe('pk_test_51S7K9LBZpO9sl6i9FaCDFvCLpHvbSzY8O94exklBAiZkXvsh1KkH5eznVRHEXeVcDXAtEUgi7UkBh0AW85k4vIAx00BdJblZLE');
 
 const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
   const stripe = useStripe();
@@ -20,11 +20,18 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
 
     try {
       // Create payment intent
-      const response = await fetch(`http://localhost:5000}/create-payment-intent`, {
+      const amountInCents = Math.round(fee * 100); // Convert to cents and ensure integer
+      const response = await fetch('http://localhost:5000/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: fee })
+        body: JSON.stringify({ amount: amountInCents })
       });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Payment intent error:', errorData);
+        throw new Error(`Server error: ${response.status}`);
+      }
 
       const { clientSecret } = await response.json();
 
@@ -36,15 +43,10 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
       });
 
       if (result.error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Payment Failed',
-          text: result.error.message,
-          confirmButtonColor: '#3085d6'
-        });
+        Swal.fire('Payment Error!', result.error.message, 'error');
       } else {
         // Payment successful, book the session
-        const bookResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/book-session`, {
+        const bookResponse = await fetch('http://localhost:5000/api/book-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bookingData)
@@ -54,21 +56,11 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
         if (bookResult.success) {
           onSuccess();
         } else {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Booking Issue',
-            text: 'Payment successful but booking failed. Please contact support.',
-            confirmButtonColor: '#3085d6'
-          });
+          Swal.fire('Booking Error!', 'Payment successful but booking failed. Please contact support.', 'warning');
         }
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Payment Error',
-        text: 'Payment failed. Please try again.',
-        confirmButtonColor: '#3085d6'
-      });
+      Swal.fire('Payment Failed!', 'Payment failed. Please try again.', 'error');
     } finally {
       setProcessing(false);
     }
@@ -128,17 +120,7 @@ const PaymentPage = () => {
   const handlePaymentSuccess = () => {
     setPaymentSuccess(true);
     localStorage.removeItem('pendingBooking');
-    
-    Swal.fire({
-      icon: 'success',
-      title: 'Payment Successful!',
-      text: 'Your session has been booked successfully.',
-      timer: 3000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    }).then(() => {
-      navigate('/');
-    });
+    setTimeout(() => navigate('/'), 3000);
   };
 
   if (paymentSuccess) {

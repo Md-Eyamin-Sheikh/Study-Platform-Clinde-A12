@@ -27,7 +27,8 @@ export default function LoginPage() {
       const token = await userCredential.user.getIdToken();
       console.log("JWT Token:", token); // For demonstration, in real app store in localStorage or context
       Swal.fire("Success", "Login successful!", "success");
-      navigate("/dashboard");
+      navigate("/");
+      window.location.reload();
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
@@ -57,7 +58,8 @@ export default function LoginPage() {
       const token = await user.getIdToken();
       console.log("JWT Token:", token); 
       Swal.fire("Success", "Google login successful!", "success");
-      navigate("/dashboard");
+      navigate("/");
+      window.location.reload();
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }

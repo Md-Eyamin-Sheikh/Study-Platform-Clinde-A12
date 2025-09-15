@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Star, Send } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 const BookedSessionDetail = ({ session, onBack }) => {
   const [reviews, setReviews] = useState([]);
@@ -42,11 +43,11 @@ const BookedSessionDetail = ({ session, onBack }) => {
       if (data.success) {
         setNewReview({ rating: 5, comment: '' });
         fetchReviews();
-        alert('Review submitted successfully!');
+        Swal.fire('Success!', 'Review submitted successfully!', 'success');
       }
     } catch (error) {
       console.error('Error submitting review:', error);
-      alert('Failed to submit review');
+      Swal.fire('Error!', 'Failed to submit review', 'error');
     } finally {
       setSubmitting(false);
     }

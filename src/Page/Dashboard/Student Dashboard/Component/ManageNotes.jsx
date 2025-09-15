@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Edit, Trash2, Save, X } from 'lucide-react';
 import { AuthContext } from '../../../../providers/AuthProvider';
+import Swal from 'sweetalert2';
 
 const ManageNotes = () => {
   const { user } = useContext(AuthContext);
@@ -48,16 +49,26 @@ const ManageNotes = () => {
       if (data.success) {
         setEditingNote(null);
         fetchNotes();
-        alert('Note updated successfully!');
+        Swal.fire('Success!', 'Note updated successfully!', 'success');
       }
     } catch (error) {
       console.error('Error updating note:', error);
-      alert('Failed to update note');
+      Swal.fire('Error!', 'Failed to update note', 'error');
     }
   };
 
   const handleDelete = async (noteId) => {
-    if (!confirm('Are you sure you want to delete this note?')) return;
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       const response = await fetch(`http://localhost:5000/api/notes/${noteId}`, {
@@ -67,11 +78,11 @@ const ManageNotes = () => {
       const data = await response.json();
       if (data.success) {
         fetchNotes();
-        alert('Note deleted successfully!');
+        Swal.fire('Deleted!', 'Note deleted successfully!', 'success');
       }
     } catch (error) {
       console.error('Error deleting note:', error);
-      alert('Failed to delete note');
+      Swal.fire('Error!', 'Failed to delete note', 'error');
     }
   };
 

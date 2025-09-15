@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Save } from 'lucide-react';
 import { AuthContext } from '../../../../providers/AuthProvider';
+import Swal from 'sweetalert2';
 
 const CreateNote = () => {
   const { user } = useContext(AuthContext);
@@ -31,13 +32,13 @@ const CreateNote = () => {
       const data = await response.json();
       if (data.success) {
         setNote({ ...note, title: '', description: '' });
-        alert('Note created successfully!');
+        Swal.fire('Success!', 'Note created successfully!', 'success');
       } else {
-        alert('Failed to create note');
+        Swal.fire('Error!', 'Failed to create note', 'error');
       }
     } catch (error) {
       console.error('Error creating note:', error);
-      alert('Failed to create note');
+      Swal.fire('Error!', 'Failed to create note', 'error');
     } finally {
       setSubmitting(false);
     }

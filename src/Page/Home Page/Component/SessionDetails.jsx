@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../../providers/AuthProvider';
+import Swal from 'sweetalert2';
 import {
   Calendar,
   Clock,
@@ -119,15 +120,15 @@ const DetailsPage = () => {
         const result = await response.json();
 
         if (result.success) {
-          alert(`Successfully booked: ${session.title}!`);
+          Swal.fire('Success!', `Successfully booked: ${session.title}!`, 'success');
           setBookedSessions([...bookedSessions, session._id]);
         } else {
-          alert(result.message || 'Failed to book session. Please try again.');
+          Swal.fire('Error!', result.message || 'Failed to book session. Please try again.', 'error');
         }
       }
     } catch (error) {
       console.error('Error booking session:', error);
-      alert('An error occurred while booking the session.');
+      Swal.fire('Error!', 'An error occurred while booking the session.', 'error');
     }
   };
 

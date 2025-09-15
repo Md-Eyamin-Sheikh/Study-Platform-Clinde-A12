@@ -106,7 +106,8 @@ export default function RegisterPage() {
       });
 
       Swal.fire("Success", "Registration successful!", "success");
-      navigate("/dashboard");
+      navigate("/");
+      window.location.reload();
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
@@ -130,7 +131,8 @@ export default function RegisterPage() {
       });
 
       Swal.fire("Success", "Google registration successful!", "success");
-      navigate("/dashboard");
+      navigate("/");
+      window.location.reload();
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }

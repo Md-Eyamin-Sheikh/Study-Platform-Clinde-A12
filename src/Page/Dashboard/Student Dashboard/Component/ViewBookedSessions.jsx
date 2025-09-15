@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Eye, Star } from 'lucide-react';
 import { AuthContext } from '../../../../providers/AuthProvider';
 import BookedSessionDetail from './BookedSessionDetail';
+import Swal from 'sweetalert2';
 
 const ViewBookedSessions = () => {
   const { user } = useContext(AuthContext);

@@ -2,7 +2,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { auth, db } from '../Firbas/Firbas.js';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, enableNetwork } from 'firebase/firestore';
 
 export const AuthContext = createContext(null);
 
@@ -12,13 +12,20 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Enable Firestore network
+    enableNetwork(db).catch(() => {});
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        // Fetch user role from Firestore
-        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-        if (userDoc.exists()) {
-          setRole(userDoc.data().role);
+        try {
+          const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+          if (userDoc.exists()) {
+            setRole(userDoc.data().role);
+          }
+        } catch (error) {
+          console.log('Firestore offline, using cached data');
+          setRole(null);
         }
       } else {
         setUser(null);
