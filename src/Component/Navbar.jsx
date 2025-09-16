@@ -40,12 +40,12 @@ const Navbar = () => {
 
           {!user ? (
              <>
-               <motion.Link to='/login'
+               <motion.div
                  whileHover={{ scale: 1.05 }}
                  className="px-4 py-2 text-green-600 border border-green-600 rounded-lg hover:bg-indigo-50"
                >
-                 Login
-               </motion.Link>
+                 <Link to='/login'>Login</Link>
+               </motion.div>
                <Link
                  to="/register"
                  className="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"

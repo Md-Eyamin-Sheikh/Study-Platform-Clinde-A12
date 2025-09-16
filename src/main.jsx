@@ -14,7 +14,7 @@ import HomePage from './Page/Home Page/HomePage.jsx';
 import MainRout from './MainRout/MainRout.jsx';
 import DetalsPage from './Page/Home Page/Component/SessionDetails.jsx';
 import PaymentPage from './Page/PaymentPage.jsx';
-import StudentDashboard from './Page/Dashboard/Student Dashboard/StudentDashboard.jsx';
+import DashboardRouter from './Page/Dashboard/DashboardRouter.jsx';
 
 
 const router = createBrowserRouter([
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <StudentDashboard/>
+        element: <DashboardRouter/>
       },
       
       // {
