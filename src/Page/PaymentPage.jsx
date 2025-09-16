@@ -93,7 +93,7 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
         className={`w-full py-3 px-6 rounded-lg font-semibold text-black transition-all duration-300 ${
           processing || !stripe
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700'
+            : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
         }`}
       >
         {processing ? 'Processing Payment...' : `Pay $${fee}`}

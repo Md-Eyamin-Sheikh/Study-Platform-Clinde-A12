@@ -1,4 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, useEffect, useState } from 'react';
 import { auth, db } from '../Firbas/Firbas.js';
 import { onAuthStateChanged } from 'firebase/auth';

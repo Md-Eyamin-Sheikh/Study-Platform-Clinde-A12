@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
@@ -16,7 +16,7 @@ export default function RegisterPage() {
     email: "",
     photo: null,
     password: "",
-    role: "student",
+    role: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -67,6 +67,7 @@ export default function RegisterPage() {
   // handle form submit
   const handleRegister = async (e) => {
     e.preventDefault();
+    console.log("Form submitted with data:", formData);
     setLoading(true);
 
     if (!formData.name || !formData.email || !formData.password || !formData.photo) {
@@ -121,12 +122,12 @@ export default function RegisterPage() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Save user data to Firestore with default role student
+      // Save user data to Firestore with selected role
       await setDoc(doc(db, "users", user.uid), {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
-        role: "student",
+        role: formData.role,
         createdAt: new Date(),
       });
 

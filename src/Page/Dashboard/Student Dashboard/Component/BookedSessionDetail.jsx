@@ -59,7 +59,7 @@ const BookedSessionDetail = ({ session, onBack }) => {
     <div>
       <button
         onClick={onBack}
-        className="flex items-center text-gray-600 hover:text-gray-800 mb-6"
+        className="flex items-center text-gray-900 hover:text-gray-800 mb-6"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Booked Sessions
@@ -85,9 +85,9 @@ const BookedSessionDetail = ({ session, onBack }) => {
           {sessionDetails && (
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">Session Details</h3>
-              <p className="text-gray-600 mb-1">Duration: {sessionDetails.sessionDuration}</p>
-              <p className="text-gray-600 mb-1">Location: {sessionDetails.location}</p>
-              <p className="text-gray-600 mb-1">Level: {sessionDetails.level}</p>
+              <p className="text-gray-900 mb-1">Duration: {sessionDetails.sessionDuration}</p>
+              <p className="text-gray-900 mb-1">Location: {sessionDetails.location}</p>
+              <p className="text-gray-900 mb-1">Level: {sessionDetails.level}</p>
             </div>
           )}
         </div>
@@ -95,7 +95,7 @@ const BookedSessionDetail = ({ session, onBack }) => {
         {sessionDetails?.description && (
           <div className="mt-4">
             <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-            <p className="text-gray-600">{sessionDetails.description}</p>
+            <p className="text-gray-900">{sessionDetails.description}</p>
           </div>
         )}
       </div>
@@ -133,7 +133,7 @@ const BookedSessionDetail = ({ session, onBack }) => {
             <textarea
               value={newReview.comment}
               onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               rows="3"
               required
             />
@@ -142,7 +142,7 @@ const BookedSessionDetail = ({ session, onBack }) => {
           <button
             type="submit"
             disabled={submitting}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 flex items-center"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center"
           >
             <Send className="w-4 h-4 mr-2" />
             {submitting ? 'Submitting...' : 'Submit Review'}

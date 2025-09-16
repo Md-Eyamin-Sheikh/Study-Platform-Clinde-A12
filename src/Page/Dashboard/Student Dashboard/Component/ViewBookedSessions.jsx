@@ -73,7 +73,7 @@ const ViewBookedSessions = () => {
                 </div>
                 <button
                   onClick={() => setSelectedSession(booking)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center"
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   View Details

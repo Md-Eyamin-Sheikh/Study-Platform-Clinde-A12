@@ -65,7 +65,7 @@ const CreateNote = () => {
             type="text"
             value={note.title}
             onChange={(e) => setNote({ ...note, title: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-green-500"
             required
           />
         </div>
@@ -75,7 +75,7 @@ const CreateNote = () => {
           <textarea
             value={note.description}
             onChange={(e) => setNote({ ...note, description: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-lg px-3 py-2 text-black bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
             rows="6"
             required
           />
@@ -84,7 +84,7 @@ const CreateNote = () => {
         <button
           type="submit"
           disabled={submitting}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 flex items-center"
+          className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center"
         >
           <Save className="w-4 h-4 mr-2" />
           {submitting ? 'Creating...' : 'Create Note'}

@@ -108,7 +108,7 @@ const ViewMaterials = () => {
                             </span>
                             <button
                               onClick={() => handleDownload(image.url, image.name)}
-                              className="bg-blue-600 text-white px-2 py-1 rounded text-sm hover:bg-blue-700 flex items-center"
+                              className="bg-green-600 text-white px-2 py-1 rounded text-sm hover:bg-green-700 flex items-center"
                             >
                               <Download className="w-3 h-3 mr-1" />
                               Download
