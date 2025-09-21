@@ -62,7 +62,7 @@ export default function RegisterPage() {
     return hasUppercase && hasLowercase && hasMinLength;
   };
 
-  // console.log(import.meta.env.VITE_IMGBB_API)
+  
 
   // handle form submit
   const handleRegister = async (e) => {
@@ -95,6 +95,7 @@ export default function RegisterPage() {
       await updateProfile(userCredential.user, {
         displayName: formData.name,
         photoURL: photoURL,
+        role: formData.role,
       });
 
       // Save user data to Firestore
@@ -115,30 +116,30 @@ export default function RegisterPage() {
     setLoading(false);
   };
 
-  const handleGoogleRegister = async () => {
-    setLoading(true);
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+  // const handleGoogleRegister = async () => {
+  //   setLoading(true);
+  //   const provider = new GoogleAuthProvider();
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
 
-      // Save user data to Firestore with selected role
-      await setDoc(doc(db, "users", user.uid), {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        role: formData.role,
-        createdAt: new Date(),
-      });
+  //     // Save user data to Firestore with selected role
+  //     await setDoc(doc(db, "users", user.uid), {
+  //       name: user.displayName,
+  //       email: user.email,
+  //       photoURL: user.photoURL,
+  //       role: formData.role,
+  //       createdAt: new Date(),
+  //     });
 
-      Swal.fire("Success", "Google registration successful!", "success");
-      navigate("/");
-      window.location.reload();
-    } catch (error) {
-      Swal.fire("Error", error.message, "error");
-    }
-    setLoading(false);
-  };
+  //     Swal.fire("Success", "Google registration successful!", "success");
+  //     navigate("/");
+  //     window.location.reload();
+  //   } catch (error) {
+  //     Swal.fire("Error", error.message, "error");
+  //   }
+  //   setLoading(false);
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-6">
@@ -252,7 +253,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Google Register */}
-          <motion.button
+          {/* <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGoogleRegister}
@@ -261,7 +262,7 @@ export default function RegisterPage() {
           >
             <FcGoogle size={22} />
             <span className="font-medium text-gray-950">Continue with Google</span>
-          </motion.button>
+          </motion.button> */}
 
           {/* Login Link */}
           <p className="text-center text-gray-900 mt-6">

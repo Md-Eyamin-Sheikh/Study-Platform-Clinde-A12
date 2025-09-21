@@ -9,12 +9,13 @@ import Register from './Page/Authentication/Register.jsx';
 import LoginPage from './Page/Authentication/LoginPage.jsx';
 
 import AuthProvider from './providers/AuthProvider.jsx';
-// import ProtectedRoute from './Component/ProtectedRoute.jsx';
+import ProtectedRoute from './Component/ProtectedRoute.jsx';
 import HomePage from './Page/Home Page/HomePage.jsx';
 import MainRout from './MainRout/MainRout.jsx';
 import DetalsPage from './Page/Home Page/Component/SessionDetails.jsx';
 import PaymentPage from './Page/PaymentPage.jsx';
 import DashboardRouter from './Page/Dashboard/DashboardRouter.jsx';
+import AdminDashboard from './Page/Dashboard/AdminDashboard.jsx';
 
 
 const router = createBrowserRouter([
@@ -46,6 +47,14 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <DashboardRouter/>
       },
+      {
+        path: "/admin",
+        element: (
+          <ProtectedRoute allowedRoles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        )
+      }
       
       // {
       //   path: "/sessions",

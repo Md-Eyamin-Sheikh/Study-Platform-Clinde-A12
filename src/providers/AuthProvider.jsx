@@ -8,30 +8,44 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState('student');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Enable Firestore network
-    enableNetwork(db).catch(() => {});
-
+    setLoading(true);
+    
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        try {
-          const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-          if (userDoc.exists()) {
-            setRole(userDoc.data().role);
+      try {
+        if (currentUser) {
+          console.log('Current user detected:', currentUser.uid);
+          setUser(currentUser);
+          
+          // Wait for auth token to be ready
+          await currentUser.getIdToken(true);
+          
+          // Fetch user data from Firestore
+          const userDocRef = doc(db, "users", currentUser.uid);
+          const userDocSnap = await getDoc(userDocRef);
+          
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            console.log('User data fetched:', userData);
+            setRole(userData.role || 'student');
+          } else {
+            console.log('No user document found');
+            setRole('student');
           }
-        } catch (error) {
-          console.log('Firestore offline, using cached data');
-          setRole(null);
+        } else {
+          console.log('No user logged in');
+          setUser(null);
+          setRole('student');
         }
-      } else {
-        setUser(null);
-        setRole(null);
+      } catch (error) {
+        console.log('Error fetching user role:', error);
+        setRole('student');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -40,7 +54,8 @@ const AuthProvider = ({ children }) => {
   const value = {
     user,
     role,
-    loading
+    loading,
+    setRole
   };
 
   return (

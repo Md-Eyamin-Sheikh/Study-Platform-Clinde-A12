@@ -25,7 +25,7 @@ export default function LoginPage() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const token = await userCredential.user.getIdToken();
-      console.log("JWT Token:", token); // For demonstration, in real app store in localStorage or context
+      console.log("JWT Token:", token); 
       Swal.fire("Success", "Login successful!", "success");
       navigate("/");
       window.location.reload();
