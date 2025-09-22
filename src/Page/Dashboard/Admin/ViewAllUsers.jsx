@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Edit3, User, Crown, GraduationCap, Save, X } from 'lucide-react';
+import { collection, getDocs, doc, updateDoc, setDoc } from 'firebase/firestore';
+import { db } from '../../../Firbas/Firbas';
 import Swal from 'sweetalert2';
 
 const ViewAllUsers = () => {
@@ -20,50 +22,55 @@ const ViewAllUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/admin/users');
-      const data = await response.json();
-      setUsers(data);
-      setFilteredUsers(data);
+      const usersCollection = collection(db, 'users');
+      const usersSnapshot = await getDocs(usersCollection);
+      const usersData = usersSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      
+      setUsers(usersData);
+      setFilteredUsers(usersData);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('Error fetching users from Firebase:', error);
       setLoading(false);
     }
   };
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (!searchTerm.trim()) {
       setFilteredUsers(users);
       return;
     }
 
-    try {
-      const response = await fetch(`http://localhost:5000/admin/users/search?q=${encodeURIComponent(searchTerm)}`);
-      const data = await response.json();
-      setFilteredUsers(data);
-    } catch (error) {
-      console.error('Error searching users:', error);
-    }
+    const filtered = users.filter(user => 
+      user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filtered);
   };
 
   const updateUserRole = async (userId, newRole) => {
     try {
-      const response = await fetch(`http://localhost:5000/admin/users/${userId}/role`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ role: newRole }),
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, {
+        role: newRole,
+        updatedAt: new Date()
       });
 
-      if (response.ok) {
-        Swal.fire('Success!', 'User role updated successfully', 'success');
-        fetchUsers();
-        setEditingUser(null);
-      } else {
-        throw new Error('Failed to update role');
-      }
+      setUsers(prev => 
+        prev.map(user => 
+          user.id === userId 
+            ? { ...user, role: newRole, updatedAt: new Date() }
+            : user
+        )
+      );
+
+      Swal.fire('Success!', 'User role updated successfully', 'success');
+      setEditingUser(null);
     } catch (error) {
+      console.error('Error updating user role:', error);
       Swal.fire('Error!', 'Failed to update user role', 'error');
     }
   };
@@ -104,30 +111,8 @@ const ViewAllUsers = () => {
             transition={{ delay: 0.2 }}
             className="text-gray-600 font-medium"
           >
-            Loading users...
+            Loading users from Firebase...
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="flex space-x-1 mt-2"
-          >
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 1, 0.5]
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  delay: i * 0.2
-                }}
-                className="w-2 h-2 bg-green-600 rounded-full"
-              />
-            ))}
-          </motion.div>
         </motion.div>
       </div>
     );
@@ -135,17 +120,15 @@ const ViewAllUsers = () => {
 
   return (
     <div className="p-6">
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
         <h2 className="text-2xl font-bold text-gray-800 mb-2">All Users</h2>
-        <p className="text-gray-600">Manage user roles and permissions</p>
+        <p className="text-gray-600">Manage user roles and permissions (Data from Firebase)</p>
       </motion.div>
 
-      {/* Search Bar */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -196,7 +179,6 @@ const ViewAllUsers = () => {
         )}
       </motion.div>
 
-      {/* Users Grid */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -205,14 +187,13 @@ const ViewAllUsers = () => {
       >
         {filteredUsers.map((user, index) => (
           <motion.div
-            key={user._id}
+            key={user.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -5 }}
             className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            {/* User Avatar */}
             <div className="flex items-center mb-4">
               <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                 {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
@@ -225,14 +206,13 @@ const ViewAllUsers = () => {
               </div>
             </div>
 
-            {/* Role Badge */}
             <div className="flex items-center justify-between mb-4">
               <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${getRoleBadge(user.role)}`}>
                 {getRoleIcon(user.role)}
-                <span className="text-sm font-medium capitalize">{user.role}</span>
+                <span className="text-sm font-medium capitalize">{user.role || 'student'}</span>
               </div>
               
-              {editingUser === user._id ? (
+              {editingUser === user.id ? (
                 <div className="flex gap-2">
                   <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -247,7 +227,7 @@ const ViewAllUsers = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setEditingUser(user._id)}
+                  onClick={() => setEditingUser(user.id)}
                   className="p-2 text-gray-500 hover:text-green-600 transition-colors"
                 >
                   <Edit3 size={16} />
@@ -255,8 +235,7 @@ const ViewAllUsers = () => {
               )}
             </div>
 
-            {/* Role Editor */}
-            {editingUser === user._id && (
+            {editingUser === user.id && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -272,7 +251,7 @@ const ViewAllUsers = () => {
                       key={role}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => updateUserRole(user._id, role)}
+                      onClick={() => updateUserRole(user.id, role)}
                       className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
                         user.role === role
                           ? 'bg-green-600 text-white'
@@ -286,10 +265,9 @@ const ViewAllUsers = () => {
               </motion.div>
             )}
 
-            {/* User Stats */}
             <div className="mt-4 pt-4 border-t border-gray-100">
               <div className="text-xs text-gray-500">
-                Joined: {new Date(user.createdAt || Date.now()).toLocaleDateString()}
+                Joined: {user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown'}
               </div>
             </div>
           </motion.div>

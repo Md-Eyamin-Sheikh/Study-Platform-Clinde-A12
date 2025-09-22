@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../providers/AuthProvider';
 import StudentDashboard from './Student Dashboard/StudentDashboard';
 import TutorDashboard from './Tutor Dashboard/TutorDashboard';
-import AdminDashboard from './AdminDashboard';
+import AdminDashboard from './Admin/AdminDashboard';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../Firbas/Firbas';
 

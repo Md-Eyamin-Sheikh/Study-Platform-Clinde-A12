@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, BookOpen, FileText, TrendingUp, Clock, CheckCircle, XCircle, DollarSign } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../../Firbas/Firbas';
 
 const AdminStats = () => {
   const [stats, setStats] = useState({
@@ -21,18 +23,23 @@ const AdminStats = () => {
 
   const fetchStats = async () => {
     try {
-      const [usersRes, sessionsRes, materialsRes] = await Promise.all([
-        fetch('http://localhost:5000/admin/users'),
+      // Fetch users from Firebase
+      const usersCollection = collection(db, 'users');
+      const usersSnapshot = await getDocs(usersCollection);
+      const users = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      // Fetch sessions and materials from MongoDB
+      const [sessionsRes, materialsRes] = await Promise.all([
         fetch('http://localhost:5000/admin/sessions'),
         fetch('http://localhost:5000/admin/materials')
       ]);
 
-      const users = await usersRes.json();
       const sessions = await sessionsRes.json();
       const materials = await materialsRes.json();
 
       const usersByRole = users.reduce((acc, user) => {
-        acc[user.role] = (acc[user.role] || 0) + 1;
+        const role = user.role || 'student';
+        acc[role] = (acc[role] || 0) + 1;
         return acc;
       }, { student: 0, tutor: 0, admin: 0 });
 
@@ -148,7 +155,7 @@ const AdminStats = () => {
         className="mb-6"
       >
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Dashboard Overview</h2>
-        <p className="text-gray-600">Key metrics and statistics</p>
+        <p className="text-gray-600">Key metrics and statistics (Users from Firebase, Sessions & Materials from MongoDB)</p>
       </motion.div>
 
       {/* Stats Grid */}
@@ -198,7 +205,7 @@ const AdminStats = () => {
         transition={{ delay: 0.8 }}
         className="bg-white rounded-xl p-6 shadow-lg"
       >
-        <h3 className="text-lg font-bold text-gray-800 mb-4">User Distribution by Role</h3>
+        <h3 className="text-lg font-bold text-gray-800 mb-4">User Distribution by Role (Firebase Data)</h3>
         <div className="grid grid-cols-3 gap-4">
           {Object.entries(stats.usersByRole).map(([role, count], index) => (
             <motion.div

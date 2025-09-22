@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, User, DollarSign, CheckCircle, XCircle, Edit3, Trash2, Eye } from 'lucide-react';
 import Swal from 'sweetalert2';
 import ApprovalModal from './ApprovalModal';
+import UpdateSession from './UpdateSession';
 
 const ViewAllSessions = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [showApprovalModal, setShowApprovalModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
 
   useEffect(() => {
@@ -25,6 +27,11 @@ const ViewAllSessions = () => {
       console.error('Error fetching sessions:', error);
       setLoading(false);
     }
+  };
+
+  const handleUpdate = (session) => {
+    setSelectedSession(session);
+    setShowUpdateModal(true);
   };
 
   const handleApprove = (session) => {
@@ -240,14 +247,15 @@ const ViewAllSessions = () => {
                   </>
                 ) : session.status === 'approved' ? (
                   <>
-                    <motion.button
+                    <motion.Link to='/update-session/:id'
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => handleUpdate(session)}
                       className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <Edit3 size={16} />
                       Update
-                    </motion.button>
+                    </motion.Link>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -284,6 +292,17 @@ const ViewAllSessions = () => {
         onApprove={() => {
           fetchSessions();
           setShowApprovalModal(false);
+        }}
+      />
+
+      {/* Update Modal */}
+      <UpdateSession
+        isOpen={showUpdateModal}
+        onClose={() => setShowUpdateModal(false)}
+        session={selectedSession}
+        onUpdate={() => {
+          fetchSessions();
+          setShowUpdateModal(false);
         }}
       />
     </div>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Users, BookOpen, FileText, BarChart3 } from 'lucide-react';
-import AdminStats from './Admin/AdminStats';
-import ViewAllUsers from './Admin/ViewAllUsers';
-import ViewAllSessions from './Admin/ViewAllSessions';
-import ViewAllMaterials from './Admin/ViewAllMaterials';
+import AdminStats from './AdminStats';
+import ViewAllUsers from './ViewAllUsers';
+import ViewAllSessions from './ViewAllSessions';
+import ViewAllMaterials from './ViewAllMaterials';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');

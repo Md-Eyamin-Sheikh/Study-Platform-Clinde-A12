@@ -15,9 +15,9 @@ import MainRout from './MainRout/MainRout.jsx';
 import DetalsPage from './Page/Home Page/Component/SessionDetails.jsx';
 import PaymentPage from './Page/PaymentPage.jsx';
 import DashboardRouter from './Page/Dashboard/DashboardRouter.jsx';
-import AdminDashboard from './Page/Dashboard/AdminDashboard.jsx';
+import AdminDashboard from './Page/Dashboard/Admin/AdminDashboard.jsx';
 import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
-
+import UpdateSession from './Page/Dashboard/Admin/UpdateSession.jsx';
 
 
 const router = createBrowserRouter([
@@ -32,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage/>
+      },
+      {
+        path: "/update-session/:id",
+        element: <UpdateSession/>
       },
       {
         path: '/register',
@@ -62,6 +66,7 @@ const router = createBrowserRouter([
         path: "/sessions",
         element: <StudySessionsPlatform />
       },
+      
       // {
       //   path: "/test-firestore",
       //   element: <TestFirestore />
