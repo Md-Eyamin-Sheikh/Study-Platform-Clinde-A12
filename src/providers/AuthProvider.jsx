@@ -8,7 +8,7 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState('tutor');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,19 +30,19 @@ const AuthProvider = ({ children }) => {
           if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
             console.log('User data fetched:', userData);
-            setRole(userData.role || 'student');
+            setRole(userData.role );
           } else {
             console.log('No user document found');
-            setRole('student');
+            // setRole('student');
           }
         } else {
           console.log('No user logged in');
           setUser(null);
-          setRole('student');
+          // setRole('student');
         }
       } catch (error) {
         console.log('Error fetching user role:', error);
-        setRole('student');
+        // setRole('student');
       } finally {
         setLoading(false);
       }

@@ -121,7 +121,7 @@ const CreateSession = () => {
               value={formData.sessionTitle}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
               placeholder="Enter session title"
             />
           </motion.div>
@@ -135,7 +135,7 @@ const CreateSession = () => {
               type="text"
               value={user?.displayName || ''}
               readOnly
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
             />
           </motion.div>
 
@@ -148,7 +148,7 @@ const CreateSession = () => {
               type="email"
               value={user?.email || ''}
               readOnly
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
             />
           </motion.div>
 
@@ -163,7 +163,7 @@ const CreateSession = () => {
               onChange={handleChange}
               required
               rows={4}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
               placeholder="Describe your study session"
             />
           </motion.div>
@@ -179,7 +179,7 @@ const CreateSession = () => {
               value={formData.registrationStartDate}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
             />
           </motion.div>
 
@@ -194,7 +194,7 @@ const CreateSession = () => {
               value={formData.registrationEndDate}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
             />
           </motion.div>
 
@@ -209,7 +209,7 @@ const CreateSession = () => {
               value={formData.classStartDate}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
             />
           </motion.div>
 
@@ -224,7 +224,7 @@ const CreateSession = () => {
               value={formData.classEndDate}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
             />
           </motion.div>
 
@@ -240,7 +240,7 @@ const CreateSession = () => {
               onChange={handleChange}
               required
               min="1"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+              className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
               placeholder="e.g., 2"
             />
           </motion.div>
@@ -256,7 +256,7 @@ const CreateSession = () => {
               readOnly
               className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
             />
-            <p className="text-xs text-gray-500 mt-1">Only admin can modify this field</p>
+            <p className="text-xs text-gray-800 mt-1">Only admin can modify this field</p>
           </motion.div>
         </div>
 

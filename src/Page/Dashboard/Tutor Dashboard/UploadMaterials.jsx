@@ -215,7 +215,7 @@ const UploadMaterials = () => {
                   value={formData.title}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
                   placeholder="Enter material title"
                 />
               </div>
@@ -229,7 +229,7 @@ const UploadMaterials = () => {
                   type="text"
                   value={selectedSession || 'Please select a session'}
                   readOnly
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-800"
                 />
               </div>
 
@@ -242,7 +242,7 @@ const UploadMaterials = () => {
                   type="email"
                   value={user?.email || ''}
                   readOnly
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-800"
                 />
               </div>
 
@@ -253,12 +253,13 @@ const UploadMaterials = () => {
                 </label>
                 <div className="relative">
                   <input
-                    type="file"
+                    type="url"
                     name="image"
                     onChange={handleChange}
                     accept="image/*"
+                    placeholder="https://image.jpg"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
                   />
                   <FiImage className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
@@ -276,12 +277,12 @@ const UploadMaterials = () => {
                     value={formData.driveLink}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
                     placeholder="https://drive.google.com/..."
                   />
                   <FiLink className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-800 mt-1">
                   Paste your Google Drive shareable link (Google Doc, Sheet, etc.)
                 </p>
               </div>

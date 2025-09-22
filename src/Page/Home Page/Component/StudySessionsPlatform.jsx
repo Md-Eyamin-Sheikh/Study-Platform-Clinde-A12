@@ -52,9 +52,9 @@ const StudySessionsPlatform = () => {
 
   // Apply search and filter
   const filteredSessions = approvedSessions.filter(session => {
-    const matchesSearch = session.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         session.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = filterCategory === 'all' || session.category === filterCategory;
+    const matchesSearch = (session.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (session.description || '').toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = filterCategory === 'all' || (session.category || '') === filterCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -62,7 +62,7 @@ const StudySessionsPlatform = () => {
   const displayedSessions = showAll ? filteredSessions : filteredSessions.slice(0, 6);
 
   // Get unique categories
-  const categories = ['all', ...new Set(studySessions.map(session => session.category))];
+  const categories = ['all', ...new Set(studySessions.map(session => session.category || 'uncategorized').filter(Boolean))];
 
   const SessionCard = ({ session }) => {
     const status = getSessionStatus(session);

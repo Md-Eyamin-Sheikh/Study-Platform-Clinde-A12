@@ -16,6 +16,8 @@ import DetalsPage from './Page/Home Page/Component/SessionDetails.jsx';
 import PaymentPage from './Page/PaymentPage.jsx';
 import DashboardRouter from './Page/Dashboard/DashboardRouter.jsx';
 import AdminDashboard from './Page/Dashboard/AdminDashboard.jsx';
+import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
+
 
 
 const router = createBrowserRouter([
@@ -54,11 +56,15 @@ const router = createBrowserRouter([
             <AdminDashboard />
           </ProtectedRoute>
         )
-      }
+      },
       
+      {
+        path: "/sessions",
+        element: <StudySessionsPlatform />
+      },
       // {
-      //   path: "/sessions",
-      //   element: <StudySessionsPlatform />
+      //   path: "/test-firestore",
+      //   element: <TestFirestore />
       // },
       // {
       //   path: "/dashboard",

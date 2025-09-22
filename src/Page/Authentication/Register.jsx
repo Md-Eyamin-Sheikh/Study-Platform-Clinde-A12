@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
@@ -7,8 +6,11 @@ import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { auth, db } from "../../Firbas/Firbas";
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+
+// console.log("Saving role to Firestore:", userRole);
+// console.log("Fetched user data:", userData);
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -16,10 +18,13 @@ export default function RegisterPage() {
     email: "",
     photo: null,
     password: "",
-    role: "",
+    role: "student",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  
+
 
   // handle input changes
   const handleChange = (e) => {
@@ -95,15 +100,17 @@ export default function RegisterPage() {
       await updateProfile(userCredential.user, {
         displayName: formData.name,
         photoURL: photoURL,
-        role: formData.role,
       });
+
+      // Ensure role is not empty, default to "student"
+      const userRole = formData.role && formData.role.trim() !== "" ? formData.role : "student";
 
       // Save user data to Firestore
       await setDoc(doc(db, "users", userCredential.user.uid), {
         name: formData.name,
         email: formData.email,
         photoURL: photoURL,
-        role: formData.role,
+        role: userRole,
         createdAt: new Date(),
       });
 
@@ -116,30 +123,7 @@ export default function RegisterPage() {
     setLoading(false);
   };
 
-  // const handleGoogleRegister = async () => {
-  //   setLoading(true);
-  //   const provider = new GoogleAuthProvider();
-  //   try {
-  //     const result = await signInWithPopup(auth, provider);
-  //     const user = result.user;
-
-  //     // Save user data to Firestore with selected role
-  //     await setDoc(doc(db, "users", user.uid), {
-  //       name: user.displayName,
-  //       email: user.email,
-  //       photoURL: user.photoURL,
-  //       role: formData.role,
-  //       createdAt: new Date(),
-  //     });
-
-  //     Swal.fire("Success", "Google registration successful!", "success");
-  //     navigate("/");
-  //     window.location.reload();
-  //   } catch (error) {
-  //     Swal.fire("Error", error.message, "error");
-  //   }
-  //   setLoading(false);
-  // };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-6">
@@ -252,17 +236,7 @@ export default function RegisterPage() {
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          {/* Google Register */}
-          {/* <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleGoogleRegister}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 rounded-xl shadow-sm hover:bg-gray-50 transition disabled:opacity-50"
-          >
-            <FcGoogle size={22} />
-            <span className="font-medium text-gray-950">Continue with Google</span>
-          </motion.button> */}
+        
 
           {/* Login Link */}
           <p className="text-center text-gray-900 mt-6">
@@ -276,3 +250,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+  // console.log("Saving role to Firestore:", userRole);
+  // console.log("Fetched user data:", userData);
