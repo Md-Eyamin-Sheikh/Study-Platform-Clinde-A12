@@ -1,92 +1,86 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { FiEdit2, FiTrash2, FiExternalLink, FiImage, FiFolder } from 'react-icons/fi';
+import { AuthContext } from '../../../providers/AuthProvider';
 import Swal from 'sweetalert2';
 
 const ViewMaterials = () => {
+  const { user } = useContext(AuthContext);
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState(null);
   const [editForm, setEditForm] = useState({
     title: '',
+    imageUrl: '',
     driveLink: ''
   });
 
-  // Mock materials data - replace with actual API call
-  const mockMaterials = [
-    {
-      id: 1,
-      title: 'React Hooks Cheat Sheet',
-      studySessionId: 1,
-      sessionTitle: 'Advanced React Concepts',
-      driveLink: 'https://drive.google.com/file/d/example1',
-      imageUrl: 'https://via.placeholder.com/300x200?text=React+Hooks',
-      createdAt: new Date('2024-01-15'),
-      updatedAt: new Date('2024-01-15')
-    },
-    {
-      id: 2,
-      title: 'JavaScript ES6 Examples',
-      studySessionId: 2,
-      sessionTitle: 'JavaScript ES6+ Features',
-      driveLink: 'https://drive.google.com/file/d/example2',
-      imageUrl: 'https://via.placeholder.com/300x200?text=ES6+Examples',
-      createdAt: new Date('2024-01-16'),
-      updatedAt: new Date('2024-01-16')
-    },
-    {
-      id: 3,
-      title: 'Node.js Project Structure',
-      studySessionId: 3,
-      sessionTitle: 'Node.js Fundamentals',
-      driveLink: 'https://drive.google.com/file/d/example3',
-      imageUrl: 'https://via.placeholder.com/300x200?text=Node.js+Structure',
-      createdAt: new Date('2024-01-17'),
-      updatedAt: new Date('2024-01-17')
-    }
-  ];
-
   useEffect(() => {
-    // Simulate API call
+    fetchMaterials();
+  }, [user]);
+
+  const fetchMaterials = async () => {
+    if (!user?.email) return;
+    
     setLoading(true);
-    setTimeout(() => {
-      setMaterials(mockMaterials);
-      setLoading(false);
-    }, 1000);
-  }, []);
+    try {
+      const response = await fetch(`http://localhost:5000/api/tutor/materials/${user.email}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setMaterials(result.materials);
+      }
+    } catch (error) {
+      console.error('Error fetching materials:', error);
+    }
+    setLoading(false);
+  };
 
   const handleEdit = (material) => {
-    setEditingMaterial(material.id);
+    setEditingMaterial(material._id);
     setEditForm({
       title: material.title,
+      imageUrl: material.imageUrl,
       driveLink: material.driveLink
     });
   };
 
   const handleUpdate = async (materialId) => {
     try {
-      setMaterials(prev =>
-        prev.map(material =>
-          material.id === materialId
-            ? {
-                ...material,
-                title: editForm.title,
-                driveLink: editForm.driveLink,
-                updatedAt: new Date()
-              }
-            : material
-        )
-      );
-
-      setEditingMaterial(null);
-      setEditForm({ title: '', driveLink: '' });
-
-      Swal.fire({
-        title: 'Updated!',
-        text: 'Material has been updated successfully.',
-        icon: 'success',
-        confirmButtonColor: '#3B82F6'
+      const response = await fetch(`http://localhost:5000/api/tutor/materials/${materialId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editForm)
       });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setMaterials(prev =>
+          prev.map(material =>
+            material._id === materialId
+              ? {
+                  ...material,
+                  title: editForm.title,
+                  imageUrl: editForm.imageUrl,
+                  driveLink: editForm.driveLink
+                }
+              : material
+          )
+        );
+
+        setEditingMaterial(null);
+        setEditForm({ title: '', imageUrl: '', driveLink: '' });
+
+        Swal.fire({
+          title: 'Updated!',
+          text: 'Material has been updated successfully.',
+          icon: 'success',
+          confirmButtonColor: '#3B82F6'
+        });
+      }
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -109,20 +103,37 @@ const ViewMaterials = () => {
     });
 
     if (result.isConfirmed) {
-      setMaterials(prev => prev.filter(material => material.id !== materialId));
-      
-      Swal.fire({
-        title: 'Deleted!',
-        text: 'Material has been deleted.',
-        icon: 'success',
-        confirmButtonColor: '#3B82F6'
-      });
+      try {
+        const response = await fetch(`http://localhost:5000/api/tutor/materials/${materialId}`, {
+          method: 'DELETE'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          setMaterials(prev => prev.filter(material => material._id !== materialId));
+          
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Material has been deleted.',
+            icon: 'success',
+            confirmButtonColor: '#3B82F6'
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete material.',
+          icon: 'error',
+          confirmButtonColor: '#EF4444'
+        });
+      }
     }
   };
 
   const handleCancelEdit = () => {
     setEditingMaterial(null);
-    setEditForm({ title: '', driveLink: '' });
+    setEditForm({ title: '', imageUrl: '', driveLink: '' });
   };
 
   const containerVariants = {
@@ -180,7 +191,7 @@ const ViewMaterials = () => {
         >
           {materials.map((material, index) => (
             <motion.div
-              key={material.id}
+              key={material._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -203,7 +214,7 @@ const ViewMaterials = () => {
 
               {/* Material Content */}
               <div className="p-6">
-                {editingMaterial === material.id ? (
+                {editingMaterial === material._id ? (
                   /* Edit Form */
                   <div className="space-y-4">
                     <input
@@ -215,6 +226,13 @@ const ViewMaterials = () => {
                     />
                     <input
                       type="url"
+                      value={editForm.imageUrl}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, imageUrl: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      placeholder="Image URL"
+                    />
+                    <input
+                      type="url"
                       value={editForm.driveLink}
                       onChange={(e) => setEditForm(prev => ({ ...prev, driveLink: e.target.value }))}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -222,7 +240,7 @@ const ViewMaterials = () => {
                     />
                     <div className="flex gap-2">
                       <button
-                        onClick={() => handleUpdate(material.id)}
+                        onClick={() => handleUpdate(material._id)}
                         className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
                       >
                         Save
@@ -242,13 +260,8 @@ const ViewMaterials = () => {
                       {material.title}
                     </h3>
                     
-                    <p className="text-sm text-gray-600 mb-3">
-                      Session: {material.sessionTitle}
-                    </p>
-                    
                     <div className="text-xs text-gray-500 mb-4">
-                      <p>Created: {material.createdAt.toLocaleDateString()}</p>
-                      <p>Updated: {material.updatedAt.toLocaleDateString()}</p>
+                      <p>Created: {new Date(material.uploadedAt).toLocaleDateString()}</p>
                     </div>
 
                     {/* Action Buttons */}
@@ -276,7 +289,7 @@ const ViewMaterials = () => {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => handleDelete(material.id)}
+                        onClick={() => handleDelete(material._id)}
                         className="flex items-center gap-1 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-300 text-sm"
                       >
                         <FiTrash2 size={14} />

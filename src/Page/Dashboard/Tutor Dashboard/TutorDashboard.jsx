@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiPlus, FiEye, FiUpload, FiFolder, FiBarChart } from 'react-icons/fi';
+import { AuthContext } from '../../../providers/AuthProvider';
 import CreateSession from './CreateSession';
 import ViewSessions from './ViewSessions';
 import UploadMaterials from './UploadMaterials';
@@ -96,19 +97,69 @@ const TutorDashboard = () => {
 };
 
 const DashboardOverview = () => {
-  const stats = [
-    { label: 'Total Sessions', value: '12', color: 'bg-blue-500', icon: FiBarChart },
-    { label: 'Approved Sessions', value: '8', color: 'bg-green-500', icon: FiEye },
-    { label: 'Pending Sessions', value: '3', color: 'bg-yellow-500', icon: FiPlus },
-    { label: 'Materials Uploaded', value: '24', color: 'bg-purple-500', icon: FiFolder }
+  const { user } = useContext(AuthContext);
+  const [stats, setStats] = useState({
+    totalSessions: 0,
+    approvedSessions: 0,
+    pendingSessions: 0,
+    materialsUploaded: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStats();
+  }, [user]);
+
+  const fetchStats = async () => {
+    if (!user?.email) return;
+    
+    try {
+      // Fetch sessions
+      const sessionsResponse = await fetch(`http://localhost:5000/api/tutor/sessions/${user.email}`);
+      const sessionsResult = await sessionsResponse.json();
+      
+      // Fetch materials
+      const materialsResponse = await fetch(`http://localhost:5000/api/tutor/materials/${user.email}`);
+      const materialsResult = await materialsResponse.json();
+      
+      if (sessionsResult.success && materialsResult.success) {
+        const sessions = sessionsResult.sessions;
+        const materials = materialsResult.materials;
+        
+        setStats({
+          totalSessions: sessions.length,
+          approvedSessions: sessions.filter(s => s.status === 'approved').length,
+          pendingSessions: sessions.filter(s => s.status === 'pending').length,
+          materialsUploaded: materials.length
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+    setLoading(false);
+  };
+
+  const statsData = [
+    { label: 'Total Sessions', value: stats.totalSessions, color: 'bg-blue-500', icon: FiBarChart },
+    { label: 'Approved Sessions', value: stats.approvedSessions, color: 'bg-green-500', icon: FiEye },
+    { label: 'Pending Sessions', value: stats.pendingSessions, color: 'bg-yellow-500', icon: FiPlus },
+    { label: 'Materials Uploaded', value: stats.materialsUploaded, color: 'bg-purple-500', icon: FiFolder }
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {stats.map((stat, index) => {
+        {statsData.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <motion.div

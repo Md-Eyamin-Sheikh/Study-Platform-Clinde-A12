@@ -15,7 +15,7 @@ const CreateSession = () => {
     classEndDate: '',
     sessionDuration: '',
     registrationFee: 0,
-    status: 'Pending'
+    status: 'pending'
   });
 
   const handleChange = (e) => {
@@ -35,32 +35,36 @@ const CreateSession = () => {
         ...formData,
         tutorName: user?.displayName || '',
         tutorEmail: user?.email || '',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        registrationFee: 0,
+        status: 'pending'
       };
 
-      // Here you would typically send to your backend
-      console.log('Session Data:', sessionData);
-      
-      Swal.fire({
-        title: 'Success!',
-        text: 'Study session created successfully!',
-        icon: 'success',
-        confirmButtonColor: '#3B82F6'
+      const response = await fetch('http://localhost:5000/api/tutor/sessions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sessionData)
       });
 
-      // Reset form
-      setFormData({
-        sessionTitle: '',
-        sessionDescription: '',
-        registrationStartDate: '',
-        registrationEndDate: '',
-        classStartDate: '',
-        classEndDate: '',
-        sessionDuration: '',
-        registrationFee: 0,
-        status: 'Pending'
-      });
+      const result = await response.json();
+
+      if (result.success) {
+        // Reset form
+        setFormData({
+          sessionTitle: '',
+          sessionDescription: '',
+          registrationStartDate: '',
+          registrationEndDate: '',
+          classStartDate: '',
+          classEndDate: '',
+          sessionDuration: '',
+          registrationFee: 0,
+          status: 'pending'
+        });
+      } else {
+        throw new Error(result.message || 'Failed to create session');
+      }
     } catch (error) {
       Swal.fire({
         title: 'Error!',

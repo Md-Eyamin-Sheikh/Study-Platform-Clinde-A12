@@ -1,64 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { FiEye, FiRefreshCw, FiClock, FiCheck, FiX } from 'react-icons/fi';
+import { AuthContext } from '../../../providers/AuthProvider';
 import Swal from 'sweetalert2';
 
 const ViewSessions = () => {
+  const { user } = useContext(AuthContext);
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState('all');
 
-  // Mock data - replace with actual API call
-  const mockSessions = [
-    {
-      id: 1,
-      sessionTitle: 'Advanced React Concepts',
-      sessionDescription: 'Deep dive into React hooks and context',
-      status: 'approved',
-      registrationStartDate: '2024-01-15T10:00',
-      registrationEndDate: '2024-01-20T23:59',
-      classStartDate: '2024-01-25T14:00',
-      classEndDate: '2024-01-25T16:00',
-      sessionDuration: 2,
-      registrationFee: 0,
-      createdAt: new Date('2024-01-10')
-    },
-    {
-      id: 2,
-      sessionTitle: 'JavaScript Fundamentals',
-      sessionDescription: 'Learn the basics of JavaScript programming',
-      status: 'pending',
-      registrationStartDate: '2024-01-20T10:00',
-      registrationEndDate: '2024-01-25T23:59',
-      classStartDate: '2024-01-30T15:00',
-      classEndDate: '2024-01-30T17:00',
-      sessionDuration: 2,
-      registrationFee: 0,
-      createdAt: new Date('2024-01-15')
-    },
-    {
-      id: 3,
-      sessionTitle: 'Node.js Backend Development',
-      sessionDescription: 'Build scalable backend applications',
-      status: 'rejected',
-      registrationStartDate: '2024-01-18T10:00',
-      registrationEndDate: '2024-01-23T23:59',
-      classStartDate: '2024-01-28T16:00',
-      classEndDate: '2024-01-28T18:00',
-      sessionDuration: 2,
-      registrationFee: 0,
-      createdAt: new Date('2024-01-12')
-    }
-  ];
-
   useEffect(() => {
-    // Simulate API call
+    fetchSessions();
+  }, [user]);
+
+  const fetchSessions = async () => {
+    if (!user?.email) return;
+    
     setLoading(true);
-    setTimeout(() => {
-      setSessions(mockSessions);
-      setLoading(false);
-    }, 1000);
-  }, []);
+    try {
+      const response = await fetch(`http://localhost:5000/api/tutor/sessions/${user.email}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setSessions(result.sessions);
+      }
+    } catch (error) {
+      console.error('Error fetching sessions:', error);
+    }
+    setLoading(false);
+  };
 
   const filteredSessions = sessions.filter(session => {
     if (filter === 'all') return true;
@@ -77,20 +48,37 @@ const ViewSessions = () => {
     });
 
     if (result.isConfirmed) {
-      setSessions(prev => 
-        prev.map(session => 
-          session.id === sessionId 
-            ? { ...session, status: 'pending' }
-            : session
-        )
-      );
-      
-      Swal.fire({
-        title: 'Resubmitted!',
-        text: 'Your session has been resubmitted for approval.',
-        icon: 'success',
-        confirmButtonColor: '#3B82F6'
-      });
+      try {
+        const response = await fetch(`http://localhost:5000/api/tutor/sessions/${sessionId}/resubmit`, {
+          method: 'PUT'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          setSessions(prev => 
+            prev.map(session => 
+              session._id === sessionId 
+                ? { ...session, status: 'pending' }
+                : session
+            )
+          );
+          
+          Swal.fire({
+            title: 'Resubmitted!',
+            text: 'Your session has been resubmitted for approval.',
+            icon: 'success',
+            confirmButtonColor: '#3B82F6'
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to resubmit session.',
+          icon: 'error',
+          confirmButtonColor: '#EF4444'
+        });
+      }
     }
   };
 
@@ -188,7 +176,7 @@ const ViewSessions = () => {
           ) : (
             filteredSessions.map((session, index) => (
               <motion.div
-                key={session.id}
+                key={session._id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
@@ -232,7 +220,7 @@ const ViewSessions = () => {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => handleResubmit(session.id)}
+                        onClick={() => handleResubmit(session._id)}
                         className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
                       >
                         <FiRefreshCw size={16} />

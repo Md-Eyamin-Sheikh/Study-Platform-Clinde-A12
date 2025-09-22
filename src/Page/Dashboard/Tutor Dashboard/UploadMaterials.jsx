@@ -11,47 +11,35 @@ const UploadMaterials = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
-    image: null,
+    imageUrl: '',
     driveLink: ''
   });
 
-  // Mock approved sessions - replace with actual API call
-  const mockApprovedSessions = [
-    {
-      id: 1,
-      sessionTitle: 'Advanced React Concepts',
-      status: 'approved'
-    },
-    {
-      id: 2,
-      sessionTitle: 'JavaScript ES6+ Features',
-      status: 'approved'
-    },
-    {
-      id: 3,
-      sessionTitle: 'Node.js Fundamentals',
-      status: 'approved'
-    }
-  ];
-
   useEffect(() => {
-    // Simulate API call to fetch approved sessions
-    setApprovedSessions(mockApprovedSessions);
-  }, []);
+    fetchApprovedSessions();
+  }, [user]);
+
+  const fetchApprovedSessions = async () => {
+    if (!user?.email) return;
+    
+    try {
+      const response = await fetch(`http://localhost:5000/api/tutor/approved-sessions/${user.email}`);
+      const result = await response.json();
+      
+      if (result.success) {
+        setApprovedSessions(result.sessions);
+      }
+    } catch (error) {
+      console.error('Error fetching approved sessions:', error);
+    }
+  };
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image') {
-      setFormData(prev => ({
-        ...prev,
-        image: files[0]
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -69,37 +57,42 @@ const UploadMaterials = () => {
     setLoading(true);
 
     try {
-      // Here you would upload the image and save the material data
       const materialData = {
         title: formData.title,
         studySessionId: selectedSession,
         tutorEmail: user?.email,
-        driveLink: formData.driveLink,
-        image: formData.image,
-        createdAt: new Date()
+        imageUrl: formData.imageUrl,
+        driveLink: formData.driveLink
       };
 
-      console.log('Material Data:', materialData);
-
-      Swal.fire({
-        title: 'Success!',
-        text: 'Material uploaded successfully!',
-        icon: 'success',
-        confirmButtonColor: '#3B82F6'
+      const response = await fetch('http://localhost:5000/api/tutor/materials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(materialData)
       });
 
-      // Reset form
-      setFormData({
-        title: '',
-        image: null,
-        driveLink: ''
-      });
-      setSelectedSession('');
-      
-      // Reset file input
-      const fileInput = document.querySelector('input[type="file"]');
-      if (fileInput) fileInput.value = '';
+      const result = await response.json();
 
+      if (result.success) {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Material uploaded successfully!',
+          icon: 'success',
+          confirmButtonColor: '#3B82F6'
+        });
+
+        // Reset form
+        setFormData({
+          title: '',
+          imageUrl: '',
+          driveLink: ''
+        });
+        setSelectedSession('');
+      } else {
+        throw new Error(result.message || 'Failed to upload material');
+      }
     } catch (error) {
       Swal.fire({
         title: 'Error!',
@@ -163,19 +156,19 @@ const UploadMaterials = () => {
                   key={session.id}
                   whileHover={{ scale: 1.02 }}
                   className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
-                    selectedSession === session.id.toString()
+                    selectedSession === session._id
                       ? 'border-green-500 bg-blue-50'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
-                  onClick={() => setSelectedSession(session.id.toString())}
+                  onClick={() => setSelectedSession(session._id)}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-4 h-4 rounded-full border-2 ${
-                      selectedSession === session.id.toString()
+                      selectedSession === session._id
                         ? 'border-green-500 bg-green-500'
                         : 'border-gray-300'
                     }`}>
-                      {selectedSession === session.id.toString() && (
+                      {selectedSession === session._id && (
                         <FiCheck size={12} className="text-white" />
                       )}
                     </div>
@@ -249,20 +242,23 @@ const UploadMaterials = () => {
               {/* Upload Image */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload Image *
+                  Image URL *
                 </label>
                 <div className="relative">
                   <input
                     type="url"
-                    name="image"
+                    name="imageUrl"
+                    value={formData.imageUrl}
                     onChange={handleChange}
-                    accept="image/*"
-                    placeholder="https://image.jpg"
+                    placeholder="https://example.com/image.jpg"
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
                   />
                   <FiImage className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 </div>
+                <p className="text-xs text-gray-800 mt-1">
+                  You can use ImgBB or any image hosting service
+                </p>
               </div>
 
               {/* Google Drive Link */}
