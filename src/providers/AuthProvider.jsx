@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       console.log('Firebase Auth State Changed:', currentUser);
       if (currentUser) {
         console.log('User UID:', currentUser.uid);
@@ -65,6 +65,20 @@ const AuthProvider = ({ children }) => {
         console.log('User Email Verified:', currentUser.emailVerified);
         console.log('User Provider Data:', currentUser.providerData);
         console.log('User Metadata:', currentUser.metadata);
+        
+        // Fetch user role from backend
+        try {
+          const response = await fetch(`http://localhost:5000/users/${currentUser.uid}/role`);
+          if (response.ok) {
+            const data = await response.json();
+            setRole(data.role);
+          }
+        } catch (error) {
+          console.error('Error fetching user role:', error);
+          setRole('student'); // Default role
+        }
+      } else {
+        setRole(null);
       }
       setUser(currentUser);
       setLoading(false);

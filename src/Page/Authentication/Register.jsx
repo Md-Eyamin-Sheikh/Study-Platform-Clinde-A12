@@ -97,8 +97,10 @@ export default function RegisterPage() {
 
       if (response.ok) {
         setRole(formData.role);
-        Swal.fire("Success", "Account created successfully!", "success");
-        navigate('/');
+        Swal.fire("Success", "Account created successfully!", "success").then(() => {
+          window.location.reload();
+          navigate('/');
+        });
       }
     } catch (error) {
       Swal.fire("Error", error.message, "error");
@@ -129,8 +131,10 @@ export default function RegisterPage() {
 
       if (response.ok) {
         setRole('student');
-        Swal.fire("Success", "Account created successfully!", "success");
-        navigate('/');
+        Swal.fire("Success", "Account created successfully!", "success").then(() => {
+          window.location.reload();
+          navigate('/');
+        });
       }
     } catch (error) {
       Swal.fire("Error", error.message, "error");
