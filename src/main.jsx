@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <LoginPage/>
       },
       {
-        path: "/update-session/:id",
+        path: "/update-session",
         element: <UpdateSession/>
       },
       {

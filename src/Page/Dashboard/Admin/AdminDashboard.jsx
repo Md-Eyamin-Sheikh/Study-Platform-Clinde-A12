@@ -5,6 +5,8 @@ import AdminStats from './AdminStats';
 import ViewAllUsers from './ViewAllUsers';
 import ViewAllSessions from './ViewAllSessions';
 import ViewAllMaterials from './ViewAllMaterials';
+import { Link } from "react-router-dom";
+
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');

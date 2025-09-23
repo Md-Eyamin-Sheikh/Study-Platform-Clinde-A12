@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, BookOpen, FileText, TrendingUp, Clock, CheckCircle, XCircle, DollarSign } from 'lucide-react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../Firbas/Firbas';
 
 const AdminStats = () => {
   const [stats, setStats] = useState({

@@ -4,17 +4,15 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../providers/AuthProvider";
-import { auth } from "../Firbas/Firbas";
-import { signOut } from "firebase/auth";
 
 const Navbar = () => {
-  const { user, role, loading } = useContext(AuthContext);
+  const { user, role, loading, logOut } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      await logOut();
       Swal.fire("Logged Out", "See you again!", "success");
       navigate("/");
     } catch (error) {

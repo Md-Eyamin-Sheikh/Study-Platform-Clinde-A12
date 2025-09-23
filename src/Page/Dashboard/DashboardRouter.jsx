@@ -3,8 +3,6 @@ import { AuthContext } from '../../providers/AuthProvider';
 import StudentDashboard from './Student Dashboard/StudentDashboard';
 import TutorDashboard from './Tutor Dashboard/TutorDashboard';
 import AdminDashboard from './Admin/AdminDashboard';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../Firbas/Firbas';
 
 const DashboardRouter = () => {
   const { user, role, loading, setRole } = useContext(AuthContext);

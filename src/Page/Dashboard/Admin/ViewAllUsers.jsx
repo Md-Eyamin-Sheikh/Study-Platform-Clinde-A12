@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Edit3, User, Crown, GraduationCap, Save, X } from 'lucide-react';
-import { collection, getDocs, doc, updateDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../../Firbas/Firbas';
 import Swal from 'sweetalert2';
+import { Link } from "react-router-dom";
+
 
 const ViewAllUsers = () => {
   const [users, setUsers] = useState([]);

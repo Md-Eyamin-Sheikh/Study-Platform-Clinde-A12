@@ -4,6 +4,8 @@ import { Clock, User, DollarSign, CheckCircle, XCircle, Edit3, Trash2, Eye } fro
 import Swal from 'sweetalert2';
 import ApprovalModal from './ApprovalModal';
 import UpdateSession from './UpdateSession';
+import { Link } from "react-router-dom";
+
 
 const ViewAllSessions = () => {
   const [sessions, setSessions] = useState([]);
@@ -247,7 +249,7 @@ const ViewAllSessions = () => {
                   </>
                 ) : session.status === 'approved' ? (
                   <>
-                    <motion.Link to='/update-session/:id'
+                    <motion.Link to='/update-session'
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleUpdate(session)}
