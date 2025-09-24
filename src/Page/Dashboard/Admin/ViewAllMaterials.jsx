@@ -16,9 +16,11 @@ const ViewAllMaterials = () => {
 
   const fetchMaterials = async () => {
     try {
-      const response = await fetch('http://localhost:5000/admin/materials');
+      const response = await fetch('http://localhost:5000/api/tutor/materials/all');
       const data = await response.json();
-      setMaterials(data);
+      if (data.success) {
+        setMaterials(data.materials);
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching materials:', error);
@@ -40,11 +42,12 @@ const ViewAllMaterials = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`http://localhost:5000/admin/materials/${materialId}`, {
+        const response = await fetch(`http://localhost:5000/api/tutor/materials/${materialId}`, {
           method: 'DELETE'
         });
 
-        if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
           Swal.fire('Deleted!', 'Material has been removed successfully.', 'success');
           fetchMaterials();
         } else {
@@ -61,12 +64,13 @@ const ViewAllMaterials = () => {
       title: material.title,
       html: `
         <div class="text-left space-y-3">
-          <p><strong>Description:</strong> ${material.description}</p>
-          <p><strong>Uploaded by:</strong> ${material.uploadedBy}</p>
-          <p><strong>Upload Date:</strong> ${new Date(material.uploadDate).toLocaleDateString()}</p>
-          <p><strong>File Type:</strong> ${material.fileType}</p>
-          <p><strong>File Size:</strong> ${material.fileSize}</p>
-          ${material.downloadUrl ? `<p><strong>Download:</strong> <a href="${material.downloadUrl}" target="_blank" class="text-blue-600 hover:underline">Click here</a></p>` : ''}
+          <p><strong>Uploaded by:</strong> ${material.tutorEmail}</p>
+          <p><strong>Session ID:</strong> ${material.studySessionId}</p>
+          <p><strong>Upload Date:</strong> ${new Date(material.uploadedAt).toLocaleDateString()}</p>
+          <p><strong>Drive Link:</strong> <a href="${material.driveLink}" target="_blank" class="text-blue-600 hover:underline">View Material</a></p>
+          <div class="mt-4">
+            <img src="${material.imageUrl}" alt="${material.title}" class="w-full max-w-sm mx-auto rounded-lg" />
+          </div>
         </div>
       `,
       width: 600,
@@ -102,9 +106,9 @@ const ViewAllMaterials = () => {
 
   const filteredMaterials = materials.filter(material => {
     if (filter === 'all') return true;
-    if (filter === 'outdated') return isOutdated(material.uploadDate);
-    if (filter === 'recent') return !isOutdated(material.uploadDate);
-    return material.fileType?.includes(filter);
+    if (filter === 'outdated') return isOutdated(material.uploadedAt);
+    if (filter === 'recent') return !isOutdated(material.uploadedAt);
+    return false; // Remove file type filtering since tutor materials don't have fileType
   });
 
   if (loading) {
@@ -142,10 +146,7 @@ const ViewAllMaterials = () => {
           {[
             { key: 'all', label: 'All Materials' },
             { key: 'recent', label: 'Recent' },
-            { key: 'outdated', label: 'Outdated' },
-            { key: 'pdf', label: 'PDFs' },
-            { key: 'image', label: 'Images' },
-            { key: 'video', label: 'Videos' }
+            { key: 'outdated', label: 'Outdated' }
           ].map((filterOption) => (
             <motion.button
               key={filterOption.key}
@@ -161,9 +162,8 @@ const ViewAllMaterials = () => {
               {filterOption.label}
               <span className="ml-2 text-sm">
                 ({filterOption.key === 'all' ? materials.length : 
-                  filterOption.key === 'recent' ? materials.filter(m => !isOutdated(m.uploadDate)).length :
-                  filterOption.key === 'outdated' ? materials.filter(m => isOutdated(m.uploadDate)).length :
-                  materials.filter(m => m.fileType?.includes(filterOption.key)).length})
+                  filterOption.key === 'recent' ? materials.filter(m => !isOutdated(m.uploadedAt)).length :
+                  filterOption.key === 'outdated' ? materials.filter(m => isOutdated(m.uploadedAt)).length : 0})
               </span>
             </motion.button>
           ))}
@@ -189,7 +189,7 @@ const ViewAllMaterials = () => {
               className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 relative"
             >
               {/* Outdated Badge */}
-              {isOutdated(material.uploadDate) && (
+              {isOutdated(material.uploadedAt) && (
                 <div className="absolute top-4 right-4">
                   <div className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                     <AlertTriangle size={12} />
@@ -198,11 +198,15 @@ const ViewAllMaterials = () => {
                 </div>
               )}
 
-              {/* File Icon */}
+              {/* Material Image */}
               <div className="text-center mb-4">
-                <div className="text-4xl mb-2">{getFileTypeIcon(material.fileType)}</div>
-                <div className={`inline-flex items-center px-3 py-1 rounded-full border text-sm font-medium ${getFileTypeColor(material.fileType)}`}>
-                  {material.fileType || 'Unknown'}
+                <img
+                  src={material.imageUrl}
+                  alt={material.title}
+                  className="w-full h-32 object-cover rounded-lg mb-2"
+                />
+                <div className="bg-green-100 text-green-800 border-green-200 inline-flex items-center px-3 py-1 rounded-full border text-sm font-medium">
+                  Study Material
                 </div>
               </div>
 
@@ -211,25 +215,20 @@ const ViewAllMaterials = () => {
                 <h3 className="font-bold text-lg text-gray-800 mb-2 line-clamp-2">
                   {material.title}
                 </h3>
-                <p className="text-gray-600 text-sm line-clamp-3 mb-3">
-                  {material.description}
-                </p>
                 
                 <div className="space-y-2 text-sm text-gray-500">
                   <div className="flex items-center gap-2">
                     <User size={14} />
-                    <span>By: {material.uploadedBy}</span>
+                    <span>By: {material.tutorEmail}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar size={14} />
-                    <span>{new Date(material.uploadDate).toLocaleDateString()}</span>
+                    <span>{new Date(material.uploadedAt).toLocaleDateString()}</span>
                   </div>
-                  {material.fileSize && (
-                    <div className="flex items-center gap-2">
-                      <FileText size={14} />
-                      <span>Size: {material.fileSize}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2">
+                    <FileText size={14} />
+                    <span>Session: {material.studySessionId}</span>
+                  </div>
                 </div>
               </div>
 
@@ -245,16 +244,14 @@ const ViewAllMaterials = () => {
                   View
                 </motion.button>
                 
-                {material.downloadUrl && (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => window.open(material.downloadUrl, '_blank')}
-                    className="bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
-                  >
-                    <Download size={14} />
-                  </motion.button>
-                )}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => window.open(material.driveLink, '_blank')}
+                  className="bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
+                >
+                  <Download size={14} />
+                </motion.button>
                 
                 <motion.button
                   whileHover={{ scale: 1.05 }}

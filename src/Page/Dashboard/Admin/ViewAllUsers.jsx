@@ -22,18 +22,17 @@ const ViewAllUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const usersCollection = collection(db, 'users');
-      const usersSnapshot = await getDocs(usersCollection);
-      const usersData = usersSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      
-      setUsers(usersData);
-      setFilteredUsers(usersData);
+      const response = await fetch('http://localhost:5000/admin/users');
+      if (response.ok) {
+        const usersData = await response.json();
+        setUsers(usersData);
+        setFilteredUsers(usersData);
+      } else {
+        console.error('Failed to fetch users');
+      }
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching users from Firebase:', error);
+      console.error('Error fetching users from MongoDB:', error);
       setLoading(false);
     }
   };
@@ -53,22 +52,27 @@ const ViewAllUsers = () => {
 
   const updateUserRole = async (userId, newRole) => {
     try {
-      const userRef = doc(db, 'users', userId);
-      await updateDoc(userRef, {
-        role: newRole,
-        updatedAt: new Date()
+      const response = await fetch(`http://localhost:5000/admin/users/${userId}/role`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ role: newRole }),
       });
 
-      setUsers(prev => 
-        prev.map(user => 
-          user.id === userId 
-            ? { ...user, role: newRole, updatedAt: new Date() }
-            : user
-        )
-      );
-
-      Swal.fire('Success!', 'User role updated successfully', 'success');
-      setEditingUser(null);
+      if (response.ok) {
+        setUsers(prev => 
+          prev.map(user => 
+            user._id === userId 
+              ? { ...user, role: newRole, updatedAt: new Date() }
+              : user
+          )
+        );
+        Swal.fire('Success!', 'User role updated successfully', 'success');
+        setEditingUser(null);
+      } else {
+        throw new Error('Failed to update user role');
+      }
     } catch (error) {
       console.error('Error updating user role:', error);
       Swal.fire('Error!', 'Failed to update user role', 'error');
@@ -111,7 +115,7 @@ const ViewAllUsers = () => {
             transition={{ delay: 0.2 }}
             className="text-gray-600 font-medium"
           >
-            Loading users from Firebase...
+            Loading users from MongoDB...
           </motion.p>
         </motion.div>
       </div>
@@ -126,7 +130,7 @@ const ViewAllUsers = () => {
         className="mb-6"
       >
         <h2 className="text-2xl font-bold text-gray-800 mb-2">All Users</h2>
-        <p className="text-gray-600">Manage user roles and permissions (Data from Firebase)</p>
+        <p className="text-gray-600">Manage user roles and permissions (Data from MongoDB)</p>
       </motion.div>
 
       <motion.div
@@ -187,7 +191,7 @@ const ViewAllUsers = () => {
       >
         {filteredUsers.map((user, index) => (
           <motion.div
-            key={user.id}
+            key={user._id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -212,7 +216,7 @@ const ViewAllUsers = () => {
                 <span className="text-sm font-medium capitalize">{user.role || 'student'}</span>
               </div>
               
-              {editingUser === user.id ? (
+              {editingUser === user._id ? (
                 <div className="flex gap-2">
                   <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -227,7 +231,7 @@ const ViewAllUsers = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setEditingUser(user.id)}
+                  onClick={() => setEditingUser(user._id)}
                   className="p-2 text-gray-500 hover:text-green-600 transition-colors"
                 >
                   <Edit3 size={16} />
@@ -235,7 +239,7 @@ const ViewAllUsers = () => {
               )}
             </div>
 
-            {editingUser === user.id && (
+            {editingUser === user._id && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -251,7 +255,7 @@ const ViewAllUsers = () => {
                       key={role}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => updateUserRole(user.id, role)}
+                      onClick={() => updateUserRole(user._id, role)}
                       className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
                         user.role === role
                           ? 'bg-green-600 text-white'
@@ -267,7 +271,7 @@ const ViewAllUsers = () => {
 
             <div className="mt-4 pt-4 border-t border-gray-100">
               <div className="text-xs text-gray-500">
-                Joined: {user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown'}
+                Joined: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Unknown'}
               </div>
             </div>
           </motion.div>
