@@ -19,6 +19,8 @@ const StudySessionsPlatform = () => {
   const [studySessions, setStudySessions] = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sessionsPerPage] = useState(6);
 
   // Fetch study sessions from API
   useEffect(() => {
@@ -58,8 +60,14 @@ const StudySessionsPlatform = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Show only 6 sessions by default
-  const displayedSessions = showAll ? filteredSessions : filteredSessions.slice(0, 6);
+  // Pagination logic
+  const totalPages = Math.ceil(filteredSessions.length / sessionsPerPage);
+  const indexOfLastSession = currentPage * sessionsPerPage;
+  const indexOfFirstSession = indexOfLastSession - sessionsPerPage;
+  const currentSessions = filteredSessions.slice(indexOfFirstSession, indexOfLastSession);
+
+  // Show only 6 sessions by default or paginated sessions
+  const displayedSessions = showAll ? filteredSessions : currentSessions;
 
   // Get unique categories
   const categories = ['all', ...new Set(studySessions.map(session => session.category || 'uncategorized').filter(Boolean))];
@@ -177,11 +185,49 @@ const StudySessionsPlatform = () => {
           ))}
         </div>
 
+        {/* Pagination Controls */}
+        {!showAll && totalPages > 1 && (
+          <div className="flex justify-center items-center mt-12 space-x-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`px-4 py-2 rounded-lg ${
+                  currentPage === index + 1
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        )}
+
         {/* Show All Button */}
         {filteredSessions.length > 6 && (
-          <div className="text-center mt-12">
+          <div className="text-center mt-8">
             <button
-              onClick={() => setShowAll(!showAll)}
+              onClick={() => {
+                setShowAll(!showAll);
+                setCurrentPage(1);
+              }}
               className="px-8 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-all duration-300"
             >
               {showAll ? 'Show Less' : `Show All Courses (${filteredSessions.length})`}

@@ -11,6 +11,8 @@ const ViewAllUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(9);
 
   useEffect(() => {
     fetchUsers();
@@ -40,6 +42,7 @@ const ViewAllUsers = () => {
   const handleSearch = () => {
     if (!searchTerm.trim()) {
       setFilteredUsers(users);
+      setCurrentPage(1);
       return;
     }
 
@@ -48,6 +51,7 @@ const ViewAllUsers = () => {
       user.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredUsers(filtered);
+    setCurrentPage(1);
   };
 
   const updateUserRole = async (userId, newRole) => {
@@ -122,6 +126,12 @@ const ViewAllUsers = () => {
     );
   }
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
   return (
     <div className="p-6">
       <motion.div
@@ -189,7 +199,7 @@ const ViewAllUsers = () => {
         transition={{ delay: 0.2 }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {filteredUsers.map((user, index) => (
+        {currentUsers.map((user, index) => (
           <motion.div
             key={user._id}
             initial={{ opacity: 0, y: 20 }}
@@ -277,6 +287,46 @@ const ViewAllUsers = () => {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex justify-center items-center mt-8 space-x-2"
+        >
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`px-4 py-2 rounded-lg ${
+                currentPage === index + 1
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </motion.div>
+      )}
 
       {filteredUsers.length === 0 && (
         <motion.div
