@@ -8,7 +8,7 @@ const MainRout = () => {
         <div>
             <Navbar />
                 <div className='pt-12'>
-                <Outlet />
+                <Outlet className='pt-12 w-full' />
 
                 </div>
            

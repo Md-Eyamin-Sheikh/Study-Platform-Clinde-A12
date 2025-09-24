@@ -8,7 +8,7 @@ import StatsSection from './Component/StatsSection';
 
 const HomePage = () => {
     return (
-        <div>
+        <div className='w-full'>
             <ImageSlider/>
            
            
