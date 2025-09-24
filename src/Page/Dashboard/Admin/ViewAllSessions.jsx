@@ -4,6 +4,7 @@ import { Clock, User, DollarSign, CheckCircle, XCircle, Edit3, Trash2, Eye } fro
 import Swal from 'sweetalert2';
 import ApprovalModal from './ApprovalModal';
 import UpdateSession from './UpdateSession';
+import RejectionModal from './RejectionModal';
 import { Link } from "react-router-dom";
 
 
@@ -13,6 +14,7 @@ const ViewAllSessions = () => {
   const [filter, setFilter] = useState('all');
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
 
   useEffect(() => {
@@ -41,30 +43,28 @@ const ViewAllSessions = () => {
     setShowApprovalModal(true);
   };
 
-  const handleReject = async (sessionId) => {
-    const result = await Swal.fire({
-      title: 'Reject Session?',
-      text: 'This action cannot be undone!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#ef4444',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Yes, reject it!'
-    });
+  const handleReject = (session) => {
+    setSelectedSession(session);
+    setShowRejectionModal(true);
+  };
 
-    if (result.isConfirmed) {
-      try {
-        const response = await fetch(`http://localhost:5000/admin/sessions/${sessionId}/reject`, {
-          method: 'PATCH'
-        });
+  const handleRejectConfirm = async (rejectionData) => {
+    try {
+      const response = await fetch(`http://localhost:5000/admin/sessions/${selectedSession._id}/reject`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(rejectionData)
+      });
 
-        if (response.ok) {
-          Swal.fire('Rejected!', 'Session has been rejected and removed.', 'success');
-          fetchSessions();
-        }
-      } catch (error) {
-        Swal.fire('Error!', 'Failed to reject session', 'error');
+      if (response.ok) {
+        Swal.fire('Rejected!', 'Session has been rejected with feedback.', 'success');
+        fetchSessions();
+        setShowRejectionModal(false);
+      } else {
+        throw new Error('Failed to reject session');
       }
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to reject session', 'error');
     }
   };
 
@@ -240,7 +240,7 @@ const ViewAllSessions = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => handleReject(session._id)}
+                      onClick={() => handleReject(session)}
                       className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <XCircle size={16} />
@@ -306,6 +306,13 @@ const ViewAllSessions = () => {
           fetchSessions();
           setShowUpdateModal(false);
         }}
+      />
+
+      <RejectionModal
+        isOpen={showRejectionModal}
+        onClose={() => setShowRejectionModal(false)}
+        onReject={handleRejectConfirm}
+        sessionTitle={selectedSession?.title}
       />
     </div>
   );

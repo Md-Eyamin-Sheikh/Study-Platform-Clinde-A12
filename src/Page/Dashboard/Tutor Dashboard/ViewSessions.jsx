@@ -213,6 +213,23 @@ const ViewSessions = () => {
                         <span className="font-medium">Fee:</span> ${session.registrationFee}
                       </div>
                     </div>
+
+                    {/* Rejection Details */}
+                    {session.status === 'rejected' && session.rejectionReason && (
+                      <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <h4 className="font-medium text-red-800 mb-2">Rejection Details</h4>
+                        <div className="space-y-2 text-sm">
+                          <div>
+                            <span className="font-medium text-red-700">Reason:</span>
+                            <span className="text-red-600 ml-2">{session.rejectionReason}</span>
+                          </div>
+                          <div>
+                            <span className="font-medium text-red-700">Response:</span>
+                            <p className="text-red-600 mt-1">{session.rejectionResponse}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="flex gap-2">
