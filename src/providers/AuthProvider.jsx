@@ -39,6 +39,7 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     setLoading(true);
     console.log('Logging out user');
+    localStorage.removeItem('authToken');
     return signOut(auth);
   };
 
@@ -60,24 +61,31 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         console.log('User UID:', currentUser.uid);
         console.log('User Email:', currentUser.email);
-        console.log('User Display Name:', currentUser.displayName);
-        console.log('User Photo URL:', currentUser.photoURL);
-        console.log('User Email Verified:', currentUser.emailVerified);
-        console.log('User Provider Data:', currentUser.providerData);
-        console.log('User Metadata:', currentUser.metadata);
         
-        // Fetch user role from backend
+        // Generate JWT token
         try {
-          const response = await fetch(`http://localhost:5000/users/${currentUser.uid}/role`);
+          const response = await fetch('http://localhost:5000/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              uid: currentUser.uid, 
+              email: currentUser.email 
+            })
+          });
+          
           if (response.ok) {
             const data = await response.json();
-            setRole(data.role);
+            localStorage.setItem('authToken', data.token);
+            setRole(data.user.role);
+          } else {
+            setRole('student'); // Default role
           }
         } catch (error) {
-          console.error('Error fetching user role:', error);
+          console.error('Error generating JWT:', error);
           setRole('student'); // Default role
         }
       } else {
+        localStorage.removeItem('authToken');
         setRole(null);
       }
       setUser(currentUser);
@@ -85,6 +93,10 @@ const AuthProvider = ({ children }) => {
     });
     return () => unsubscribe();
   }, []);
+
+  const getToken = () => {
+    return localStorage.getItem('authToken');
+  };
 
   const value = {
     user,
@@ -97,7 +109,8 @@ const AuthProvider = ({ children }) => {
     logOut,
     updateUserProfile,
     setRole: updateRole,
-    setUser
+    setUser,
+    getToken
   };
 
   return (

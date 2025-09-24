@@ -11,7 +11,7 @@ const LoginPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { signIn, googleSignIn, githubSignIn, setRole } = useContext(AuthContext);
+  const { signIn, googleSignIn, githubSignIn, setRole, getToken } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({
@@ -46,6 +46,15 @@ const LoginPage = () => {
       const result = await signIn(formData.email, formData.password);
       const userRole = await getUserRole(result.user.uid);
       setRole(userRole);
+      
+      // Test JWT token
+      setTimeout(() => {
+        const token = getToken();
+        console.log('JWT Token:', token);
+        if (token) {
+          console.log('JWT Payload:', JSON.parse(atob(token.split('.')[1])));
+        }
+      }, 1000);
       
       Swal.fire({
         title: 'Success!',

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CreditCard, ArrowLeft, CheckCircle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { AuthContext } from '../providers/AuthProvider';
 import Swal from 'sweetalert2';
 
 const stripePromise = loadStripe('pk_test_51S7K9LBZpO9sl6i9FaCDFvCLpHvbSzY8O94exklBAiZkXvsh1KkH5eznVRHEXeVcDXAtEUgi7UkBh0AW85k4vIAx00BdJblZLE');
@@ -103,6 +104,7 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
 };
 
 const PaymentPage = () => {
+  const { user, loading } = useContext(AuthContext);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState(null);
@@ -111,17 +113,37 @@ const PaymentPage = () => {
   const fee = searchParams.get('fee');
 
   useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+      return;
+    }
+    
     const pendingBooking = localStorage.getItem('pendingBooking');
     if (pendingBooking) {
       setBookingData(JSON.parse(pendingBooking));
     }
-  }, []);
+  }, [user, loading, navigate]);
 
   const handlePaymentSuccess = () => {
     setPaymentSuccess(true);
     localStorage.removeItem('pendingBooking');
     setTimeout(() => navigate('/'), 3000);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
+  }
 
   if (paymentSuccess) {
     return (
