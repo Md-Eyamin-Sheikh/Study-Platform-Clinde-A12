@@ -25,12 +25,13 @@ const AdminStats = () => {
       const [usersRes, sessionsRes, materialsRes] = await Promise.all([
         fetch('http://localhost:5000/admin/users'),
         fetch('http://localhost:5000/admin/sessions'),
-        fetch('http://localhost:5000/admin/materials')
+        fetch('http://localhost:5000/api/tutor/materials/all')
       ]);
 
       const users = await usersRes.json();
       const sessions = await sessionsRes.json();
-      const materials = await materialsRes.json();
+      const materialsData = await materialsRes.json();
+      const materials = materialsData.materials || [];
 
       const usersByRole = users.reduce((acc, user) => {
         const role = user.role || 'student';

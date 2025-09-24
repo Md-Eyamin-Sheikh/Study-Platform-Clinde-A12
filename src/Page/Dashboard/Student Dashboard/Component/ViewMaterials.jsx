@@ -32,11 +32,13 @@ const ViewMaterials = () => {
 
   const fetchMaterials = async (sessionId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/materials/${sessionId}`);
+      const response = await fetch(`http://localhost:5000/api/tutor/materials/all`);
       const data = await response.json();
       
       if (data.success) {
-        setMaterials(data.materials);
+        // Filter materials by session ID
+        const sessionMaterials = data.materials.filter(material => material.studySessionId === sessionId);
+        setMaterials(sessionMaterials);
       }
     } catch (error) {
       console.error('Error fetching materials:', error);
@@ -86,62 +88,40 @@ const ViewMaterials = () => {
               <div key={material._id} className="border rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">{material.title}</h3>
                 
-                {material.description && (
-                  <p className="text-gray-600 mb-4">{material.description}</p>
-                )}
+                <p className="text-gray-600 mb-4">Uploaded by: {material.tutorEmail}</p>
 
-                {/* Images */}
-                {material.images && material.images.length > 0 && (
+                {/* Material Image */}
+                {material.imageUrl && (
                   <div className="mb-4">
-                    <h4 className="font-medium text-gray-900 mb-2">Images</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {material.images.map((image, index) => (
-                        <div key={index} className="border rounded-lg p-3">
-                          <img
-                            src={image.url}
-                            alt={image.name || `Image ${index + 1}`}
-                            className="w-full h-32 object-cover rounded mb-2"
-                          />
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600 truncate">
-                              {image.name || `Image ${index + 1}`}
-                            </span>
-                            <button
-                              onClick={() => handleDownload(image.url, image.name)}
-                              className="bg-green-600 text-white px-2 py-1 rounded text-sm hover:bg-green-700 flex items-center"
-                            >
-                              <Download className="w-3 h-3 mr-1" />
-                              Download
-                            </button>
-                          </div>
-                        </div>
-                      ))}
+                    <h4 className="font-medium text-gray-900 mb-2">Preview</h4>
+                    <div className="border rounded-lg p-3">
+                      <img
+                        src={material.imageUrl}
+                        alt={material.title}
+                        className="w-full h-48 object-cover rounded mb-2"
+                      />
                     </div>
                   </div>
                 )}
 
-                {/* Links */}
-                {material.links && material.links.length > 0 && (
+                {/* Drive Link */}
+                {material.driveLink && (
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Links</h4>
-                    <div className="space-y-2">
-                      {material.links.map((link, index) => (
-                        <div key={index} className="flex items-center justify-between border rounded p-3">
-                          <div className="flex items-center">
-                            <FileText className="w-4 h-4 mr-2 text-gray-500" />
-                            <span className="text-gray-700">{link.title || `Link ${index + 1}`}</span>
-                          </div>
-                          <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 flex items-center"
-                          >
-                            <ExternalLink className="w-3 h-3 mr-1" />
-                            Visit
-                          </a>
-                        </div>
-                      ))}
+                    <h4 className="font-medium text-gray-900 mb-2">Study Material</h4>
+                    <div className="flex items-center justify-between border rounded p-3">
+                      <div className="flex items-center">
+                        <FileText className="w-4 h-4 mr-2 text-gray-500" />
+                        <span className="text-gray-700">{material.title}</span>
+                      </div>
+                      <a
+                        href={material.driveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 flex items-center"
+                      >
+                        <ExternalLink className="w-3 h-3 mr-1" />
+                        Open
+                      </a>
                     </div>
                   </div>
                 )}
