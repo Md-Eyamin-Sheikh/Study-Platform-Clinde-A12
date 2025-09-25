@@ -26,7 +26,7 @@ const StudySessionsPlatform = () => {
   useEffect(() => {
     const fetchStudySessions = async () => {
       try {
-        const response = await fetch('http://localhost:5000/data');
+        const response = await fetch('https://study-hub-survar-a12.vercel.app/data');
         const data = await response.json();
         setStudySessions(data);
         setLoadingSessions(false);

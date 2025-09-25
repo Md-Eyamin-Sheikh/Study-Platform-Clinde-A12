@@ -23,9 +23,9 @@ const AdminStats = () => {
     try {
       // Fetch all data from MongoDB
       const [usersRes, sessionsRes, materialsRes] = await Promise.all([
-        fetch('http://localhost:5000/admin/users'),
-        fetch('http://localhost:5000/admin/sessions'),
-        fetch('http://localhost:5000/api/tutor/materials/all')
+        fetch('https://study-hub-survar-a12.vercel.app/admin/users'),
+        fetch('https://study-hub-survar-a12.vercel.app/admin/sessions'),
+        fetch('https://study-hub-survar-a12.vercel.app/api/tutor/materials/all')
       ]);
 
       const users = await usersRes.json();

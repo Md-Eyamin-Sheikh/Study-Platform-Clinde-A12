@@ -16,7 +16,7 @@ const ViewAllMaterials = () => {
 
   const fetchMaterials = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/tutor/materials/all');
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/api/tutor/materials/all');
       const data = await response.json();
       if (data.success) {
         setMaterials(data.materials);
@@ -42,7 +42,7 @@ const ViewAllMaterials = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`http://localhost:5000/api/tutor/materials/${materialId}`, {
+        const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/materials/${materialId}`, {
           method: 'DELETE'
         });
 

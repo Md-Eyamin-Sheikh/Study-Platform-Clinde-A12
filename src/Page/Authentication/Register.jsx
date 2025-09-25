@@ -87,7 +87,7 @@ export default function RegisterPage() {
         role: formData.role
       };
 
-      const response = await fetch('http://localhost:5000/users', {
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export default function RegisterPage() {
         role: 'student'
       };
 
-      const response = await fetch('http://localhost:5000/users', {
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

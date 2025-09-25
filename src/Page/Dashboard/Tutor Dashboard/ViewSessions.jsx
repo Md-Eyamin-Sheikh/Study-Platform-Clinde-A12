@@ -19,7 +19,7 @@ const ViewSessions = () => {
     
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/tutor/sessions/${user.email}`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/sessions/${user.email}`);
       const result = await response.json();
       
       if (result.success) {
@@ -49,7 +49,7 @@ const ViewSessions = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`http://localhost:5000/api/tutor/sessions/${sessionId}/resubmit`, {
+        const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/sessions/${sessionId}/resubmit`, {
           method: 'PUT'
         });
         

@@ -17,7 +17,7 @@ const ViewMaterials = () => {
 
   const fetchBookedSessions = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/student/booked-sessions/${user.email}`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/student/booked-sessions/${user.email}`);
       const data = await response.json();
       
       if (data.success) {
@@ -32,7 +32,7 @@ const ViewMaterials = () => {
 
   const fetchMaterials = async (sessionId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/tutor/materials/all`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/materials/all`);
       const data = await response.json();
       
       if (data.success) {

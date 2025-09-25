@@ -24,7 +24,7 @@ const ViewAllUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/admin/users');
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/admin/users');
       if (response.ok) {
         const usersData = await response.json();
         setUsers(usersData);
@@ -56,7 +56,7 @@ const ViewAllUsers = () => {
 
   const updateUserRole = async (userId, newRole) => {
     try {
-      const response = await fetch(`http://localhost:5000/admin/users/${userId}/role`, {
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/admin/users/${userId}/role`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

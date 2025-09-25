@@ -23,7 +23,7 @@ const LoginPage = () => {
   const getUserRole = async (uid) => {
     try {
       console.log('Fetching user role for UID:', uid);
-      const response = await fetch(`http://localhost:5000/users/${uid}`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/users/${uid}`);
       if (response.ok) {
         const userData = await response.json();
         console.log('User data from backend:', userData);
@@ -90,7 +90,7 @@ const LoginPage = () => {
           role: 'student'
         };
 
-        await fetch('http://localhost:5000/users', {
+        await fetch('https://study-hub-survar-a12.vercel.app/users', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

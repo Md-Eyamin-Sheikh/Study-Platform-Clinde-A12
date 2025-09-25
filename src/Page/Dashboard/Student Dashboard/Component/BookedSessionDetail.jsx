@@ -13,7 +13,7 @@ const BookedSessionDetail = ({ session, onBack }) => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/${session.studySessionId}`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/reviews/${session.studySessionId}`);
       const data = await response.json();
       if (data.success) {
         setReviews(data.reviews);
@@ -28,7 +28,7 @@ const BookedSessionDetail = ({ session, onBack }) => {
     setSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
