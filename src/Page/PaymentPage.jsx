@@ -21,8 +21,8 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
 
     try {
       // Create payment intent
-      const amountInCents = Math.round(fee * 100); // Convert to cents and ensure integer
-      const response = await fetch('https://study-hub-survar-a12.vercel.app/create-payment-intent', {
+      const amountInCents = Math.round(fee * 100); 
+      const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: amountInCents })
@@ -47,7 +47,7 @@ const CheckoutForm = ({ bookingData, fee, onSuccess }) => {
         Swal.fire('Payment Error!', result.error.message, 'error');
       } else {
         // Payment successful, book the session
-        const bookResponse = await fetch('https://study-hub-survar-a12.vercel.app/api/book-session', {
+        const bookResponse = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/book-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bookingData)

@@ -39,7 +39,7 @@ const CreateSession = () => {
         status: 'pending'
       };
 
-      const response = await fetch('https://study-hub-survar-a12.vercel.app/api/tutor/sessions', {
+      const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/sessions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

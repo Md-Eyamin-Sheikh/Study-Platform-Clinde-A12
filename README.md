@@ -6,7 +6,7 @@ A comprehensive React-based web application that connects students and tutors fo
 
 ## 🔗 Live Site URL
 ```
-http://localhost:5173/
+https://resilient-vacherin-ecfaf3.netlify.app/
 ```
 
 ## 👨‍💼 Admin Credentials

@@ -23,7 +23,7 @@ const UploadMaterials = () => {
     if (!user?.email) return;
     
     try {
-      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/approved-sessions/${user.email}`);
+      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/approved-sessions/${user.email}`);
       const result = await response.json();
       
       if (result.success) {
@@ -65,7 +65,7 @@ const UploadMaterials = () => {
         driveLink: formData.driveLink
       };
 
-      const response = await fetch('https://study-hub-survar-a12.vercel.app/api/tutor/materials', {
+      const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/materials', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
