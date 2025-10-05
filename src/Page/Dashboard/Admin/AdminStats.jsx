@@ -23,9 +23,9 @@ const AdminStats = () => {
     try {
       // Fetch all data from MongoDB
       const [usersRes, sessionsRes, materialsRes] = await Promise.all([
-        fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/admin/users'),
-        fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/admin/sessions'),
-        fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/materials/all')
+        fetch('https://study-hub-survar-a12.vercel.app/admin/users'),
+        fetch('https://study-hub-survar-a12.vercel.app/admin/sessions'),
+        fetch('https://study-hub-survar-a12.vercel.app/api/tutor/materials/all')
       ]);
 
       const users = await usersRes.json();

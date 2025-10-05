@@ -63,8 +63,8 @@ const AuthProvider = ({ children }) => {
         console.log('User Email:', currentUser.email);
         
         // Generate JWT token
-        try {
-          const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/auth/login', {
+        try {projects.vercel.a
+          const response = await fetch('https://study-hub-survar-a12.vercel.app/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 

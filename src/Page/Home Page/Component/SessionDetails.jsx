@@ -37,7 +37,7 @@ const DetailsPage = () => {
         let sessionData = null;
         
         try {
-          const sessionResponse = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/data/${id}`);
+          const sessionResponse = await fetch(`https://study-hub-survar-a12.vercel.app/data/${id}`);
           if (sessionResponse.ok) {
             sessionData = await sessionResponse.json();
           }
@@ -47,7 +47,7 @@ const DetailsPage = () => {
         
         // If direct fetch failed, get all sessions and find the one with matching ID
         if (!sessionData) {
-          const allSessionsResponse = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/data`);
+          const allSessionsResponse = await fetch(`https://study-hub-survar-a12.vercel.app/data`);
           if (allSessionsResponse.ok) {
             const allSessions = await allSessionsResponse.json();
             sessionData = allSessions.find(session => session._id === id || session.id === id);
@@ -61,7 +61,7 @@ const DetailsPage = () => {
         // Fetch booked sessions for current user
         if (isLoggedIn && user?.email) {
           try {
-            const bookedResponse = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/booked-sessions/${user.email}`);
+            const bookedResponse = await fetch(`https://study-hub-survar-a12.vercel.app/api/booked-sessions/${user.email}`);
             if (bookedResponse.ok) {
               const bookedData = await bookedResponse.json();
               if (bookedData.success) {
@@ -109,7 +109,7 @@ const DetailsPage = () => {
         window.location.href = `/payment?sessionId=${session._id}&fee=${session.registrationFee}`;
       } else {
         // For free sessions, book directly
-        const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/book-session', {
+        const response = await fetch('https://study-hub-survar-a12.vercel.app/api/book-session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

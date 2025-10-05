@@ -23,7 +23,7 @@ const CreateNote = () => {
     setSubmitting(true);
 
     try {
-      const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/notes', {
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/api/notes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)

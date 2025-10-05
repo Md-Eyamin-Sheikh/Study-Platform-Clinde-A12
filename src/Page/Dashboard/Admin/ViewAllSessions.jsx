@@ -23,7 +23,7 @@ const ViewAllSessions = () => {
 
   const fetchSessions = async () => {
     try {
-      const response = await fetch('https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/admin/sessions');
+      const response = await fetch('https://study-hub-survar-a12.vercel.app/admin/sessions');
       const data = await response.json();
       setSessions(data);
       setLoading(false);
@@ -50,7 +50,7 @@ const ViewAllSessions = () => {
 
   const handleRejectConfirm = async (rejectionData) => {
     try {
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/admin/sessions/${selectedSession._id}/reject`, {
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/admin/sessions/${selectedSession._id}/reject`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(rejectionData)
@@ -81,7 +81,7 @@ const ViewAllSessions = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/admin/sessions/${sessionId}`, {
+        const response = await fetch(`https://study-hub-survar-a12.vercel.app/admin/sessions/${sessionId}`, {
           method: 'DELETE'
         });
 

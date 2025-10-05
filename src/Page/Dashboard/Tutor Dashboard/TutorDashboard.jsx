@@ -115,11 +115,11 @@ const DashboardOverview = () => {
     
     try {
       // Fetch sessions
-      const sessionsResponse = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/sessions/${user.email}`);
+      const sessionsResponse = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/sessions/${user.email}`);
       const sessionsResult = await sessionsResponse.json();
       
       // Fetch materials
-      const materialsResponse = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/materials/${user.email}`);
+      const materialsResponse = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/materials/${user.email}`);
       const materialsResult = await materialsResponse.json();
       
       if (sessionsResult.success && materialsResult.success) {

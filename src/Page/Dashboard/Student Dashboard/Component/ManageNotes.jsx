@@ -17,7 +17,7 @@ const ManageNotes = () => {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/notes/${user.email}`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/notes/${user.email}`);
       const data = await response.json();
       
       if (data.success) {
@@ -36,7 +36,7 @@ const ManageNotes = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/notes/${editingNote._id}`, {
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/notes/${editingNote._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -71,7 +71,7 @@ const ManageNotes = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/notes/${noteId}`, {
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/notes/${noteId}`, {
         method: 'DELETE'
       });
 

@@ -18,7 +18,7 @@ const ApprovalModal = ({ isOpen, onClose, session, onApprove }) => {
         registrationFee: isPaid ? parseFloat(amount) : 0
       };
 
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/admin/sessions/${session._id}/approve`, {
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/admin/sessions/${session._id}/approve`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

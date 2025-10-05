@@ -24,7 +24,7 @@ const ViewMaterials = () => {
     
     setLoading(true);
     try {
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/materials/${user.email}`);
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/materials/${user.email}`);
       const result = await response.json();
       
       if (result.success) {
@@ -47,7 +47,7 @@ const ViewMaterials = () => {
 
   const handleUpdate = async (materialId) => {
     try {
-      const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/materials/${materialId}`, {
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/materials/${materialId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const ViewMaterials = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`https://study-hub-survar-a12-rtaxnv1a2-01775012014s-projects.vercel.app/api/tutor/materials/${materialId}`, {
+        const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/tutor/materials/${materialId}`, {
           method: 'DELETE'
         });
 
