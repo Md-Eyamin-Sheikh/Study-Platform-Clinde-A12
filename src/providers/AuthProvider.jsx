@@ -55,44 +55,59 @@ const AuthProvider = ({ children }) => {
     setRole(userRole);
   };
 
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log('Firebase Auth State Changed:', currentUser);
-      if (currentUser) {
-        console.log('User UID:', currentUser.uid);
-        console.log('User Email:', currentUser.email);
-        
-        // Generate JWT token
-        try {projects.vercel.a
-          const response = await fetch('https://study-hub-survar-a12.vercel.app/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              uid: currentUser.uid, 
-              email: currentUser.email 
-            })
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('authToken', data.token);
-            setRole(data.user.role);
-          } else {
-            setRole('student'); // Default role
-          }
-        } catch (error) {
-          console.error('Error generating JWT:', error);
-          setRole('student'); // Default role
-        }
-      } else {
-        localStorage.removeItem('authToken');
-        setRole(null);
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    console.log('Firebase Auth State Changed:', currentUser);
+
+    if (currentUser) {
+      console.log('User UID:', currentUser.uid);
+      console.log('User Email:', currentUser.email);
+
+      // 🔹 প্রথমে localStorage থেকে পুরোনো role পড়ে রাখো
+      const savedRole = localStorage.getItem('userRole');
+
+      if (savedRole) {
+        setRole(savedRole);
       }
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+
+      try {
+        const response = await fetch('https://study-hub-survar-a12.vercel.app/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            uid: currentUser.uid, 
+            email: currentUser.email 
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem('authToken', data.token);
+          setRole(data.user.role);
+          localStorage.setItem('userRole', data.user.role); // 🔹 role cache করে রাখো
+        } else {
+          setRole('student'); 
+          localStorage.setItem('userRole', 'student');
+        }
+      } catch (error) {
+        console.error('Error generating JWT:', error);
+        const fallbackRole = savedRole || 'student';
+        setRole(fallbackRole);
+      }
+    } else {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userRole');
+      setRole(null);
+    }
+
+    setUser(currentUser);
+    setLoading(false);
+  });
+
+  return () => unsubscribe();
+}, []);
+
 
   const getToken = () => {
     return localStorage.getItem('authToken');

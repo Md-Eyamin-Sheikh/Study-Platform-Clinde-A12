@@ -19,6 +19,24 @@ import AdminDashboard from './Page/Dashboard/Admin/AdminDashboard.jsx';
 import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
 import UpdateSession from './Page/Dashboard/Admin/UpdateSession.jsx';
 
+// Admin components
+import AdminStats from './Page/Dashboard/Admin/AdminStats.jsx';
+import ViewAllUsers from './Page/Dashboard/Admin/ViewAllUsers.jsx';
+import ViewAllSessions from './Page/Dashboard/Admin/ViewAllSessions.jsx';
+import ViewAllMaterials from './Page/Dashboard/Admin/ViewAllMaterials.jsx';
+
+// Tutor components
+import CreateSession from './Page/Dashboard/Tutor Dashboard/CreateSession.jsx';
+import ViewSessions from './Page/Dashboard/Tutor Dashboard/ViewSessions.jsx';
+import UploadMaterials from './Page/Dashboard/Tutor Dashboard/UploadMaterials.jsx';
+import ViewMaterials from './Page/Dashboard/Tutor Dashboard/ViewMaterials.jsx';
+
+// Student components
+import ViewBookedSessions from './Page/Dashboard/Student Dashboard/Component/ViewBookedSessions.jsx';
+import CreateNote from './Page/Dashboard/Student Dashboard/Component/CreateNote.jsx';
+import ManageNotes from './Page/Dashboard/Student Dashboard/Component/ManageNotes.jsx';
+import ViewMaterials1 from './Page/Dashboard/Student Dashboard/Component/ViewMaterials.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -53,6 +71,63 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <DashboardRouter/>
       },
+     
+
+      // Admin Route
+      {
+        path: "/adminStats",
+        element: <AdminStats />
+      },
+      {
+        path: "/viewAllusers",
+        element: <ViewAllUsers />
+      },
+      {
+        path: "/viewAllsessions",
+        element: <ViewAllSessions />
+      },
+      {
+        path: "/viewAllmaterials",
+        element: <ViewAllMaterials />
+      },
+
+      // Tutor Route
+      {
+        path: "/create-session",
+        element: <CreateSession />
+      },
+      {
+        path: "/view-sessions",
+        element: <ViewSessions />
+      },
+      {
+        path: "/upload-materials",
+        element: <UploadMaterials />
+      },
+      {
+        path: "/view-materials",
+        element: <ViewMaterials />
+      },
+
+
+      // Student Route
+      {
+        path: "/view-booked-sessions",
+        element: <ViewBookedSessions />
+      },
+      {
+        path: "/create-note",
+        element: <CreateNote />
+      },
+      {
+        path: "/manage-notes",
+        element: <ManageNotes />
+      },
+      {
+        path: "/view-materials",
+        element: <ViewMaterials1 />
+      },
+
       {
         path: "/admin",
         element: (
@@ -67,26 +142,7 @@ const router = createBrowserRouter([
         element: <StudySessionsPlatform />
       },
       
-      // {
-      //   path: "/test-firestore",
-      //   element: <TestFirestore />
-      // },
-      // {
-      //   path: "/dashboard",
-      //   element: (
-      //     <ProtectedRoute>
-      //       <Dashboard />
-      //     </ProtectedRoute>
-      //   )
-      // },
-      // {
-      //   path: "/admin",
-      //   element: (
-      //     <ProtectedRoute allowedRoles={['admin']}>
-      //       <AdminPanel />
-      //     </ProtectedRoute>
-      //   )
-      // }
+      
     ]
   }
 ]);

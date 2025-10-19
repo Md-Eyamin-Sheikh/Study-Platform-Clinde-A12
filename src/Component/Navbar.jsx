@@ -37,7 +37,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-green-50 to-green-100 shadow-md fixed w-full z-50 bg-green-200">
+    <nav className=" to-green-100 shadow-md fixed w-full z-50 bg-green-200">
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-xl sm:text-2xl font-bold text-green-600 flex-shrink-0">
@@ -119,6 +119,7 @@ const Navbar = () => {
                 <span className="text-gray-700 font-medium hidden 2xl:block text-sm">
                   {user.displayName || user.email}
                 </span>
+                                {/* Rol diklar. */}
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   role === 'admin' ? 'bg-red-100 text-red-800' :
                   role === 'tutor' ? 'bg-green-100 text-green-800' :
