@@ -1,46 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Star, BookOpen, Users } from 'lucide-react';
 
 const PopularTutors = () => {
-  const tutors = [
-    {
-      id: 1,
-      name: "Dr. Sarah Johnson",
-      expertise: "Mathematics & Physics",
-      rating: 4.9,
-      students: 1250,
-      sessions: 89,
-      image: "https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg"
-    },
-    {
-      id: 2,
-      name: "Prof. Michael Chen",
-      expertise: "Computer Science",
-      rating: 4.8,
-      students: 980,
-      sessions: 67,
-      image: "https://i.postimg.cc/9MC9pZhM/pexels-kimmi-jun-201206578-18506745.jpg"
-    },
-    {
-      id: 3,
-      name: "Dr. Emily Rodriguez",
-      expertise: "Biology & Chemistry",
-      rating: 4.9,
-      students: 1100,
-      sessions: 78,
-      image: "https://i.postimg.cc/fy6THQ9K/pexels-green-odette-232224115-32292148.jpg"
-    },
-    {
-      id: 4,
-      name: "James Wilson",
-      expertise: "English Literature",
-      rating: 4.7,
-      students: 850,
-      sessions: 56,
-      image: "https://i.postimg.cc/c18KnFYm/pexels-chuchuphinh-1164572.jpg"
-    }
-  ];
+  const [tutors, setTutors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTutors = async () => {
+      try {
+        const response = await fetch('https://study-hub-survar-a12.vercel.app/data');
+        const sessions = await response.json();
+        
+        // Extract unique tutors from sessions
+        const tutorMap = new Map();
+        sessions.forEach(session => {
+          if (!tutorMap.has(session.tutorEmail)) {
+            tutorMap.set(session.tutorEmail, {
+              id: session.tutorEmail,
+              name: session.tutorName,
+              email: session.tutorEmail,
+              expertise: session.sessionTitle?.split(' ')[0] + ' Specialist' || 'Subject Expert',
+              rating: (4.5 + Math.random() * 0.4).toFixed(1),
+              students: Math.floor(Math.random() * 1000) + 500,
+              sessions: Math.floor(Math.random() * 50) + 20,
+              image: session.image || `https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg`
+            });
+          }
+        });
+        
+        setTutors(Array.from(tutorMap.values()).slice(0, 4));
+      } catch (error) {
+        console.error('Error fetching tutors:', error);
+        // Fallback data
+        setTutors([
+          {
+            id: 1,
+            name: "Dr. Sarah Johnson",
+            expertise: "Mathematics & Physics",
+            rating: 4.9,
+            students: 1250,
+            sessions: 89,
+            image: "https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg"
+          },
+          {
+            id: 2,
+            name: "Prof. Michael Chen",
+            expertise: "Computer Science",
+            rating: 4.8,
+            students: 980,
+            sessions: 67,
+            image: "https://i.postimg.cc/9MC9pZhM/pexels-kimmi-jun-201206578-18506745.jpg"
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTutors();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="animate-pulse bg-gray-200 h-80 rounded-xl"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-white">
@@ -101,13 +134,15 @@ const PopularTutors = () => {
                 </div>
               </div>
               
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="mt-4 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
-              >
-                View Profile
-              </motion.button>
+              <Link to={`/tutor-profile/${tutor.email || tutor.id}`}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-4 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  View Profile
+                </motion.button>
+              </Link>
             </motion.div>
           ))}
         </div>

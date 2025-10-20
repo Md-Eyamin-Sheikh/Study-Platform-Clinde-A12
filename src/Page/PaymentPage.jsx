@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { CreditCard, ArrowLeft, CheckCircle } from 'lucide-react';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { CreditCard, ArrowLeft, CheckCircle, Crown, Zap } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { AuthContext } from '../providers/AuthProvider';
@@ -109,8 +109,11 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const [bookingData, setBookingData] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const location = useLocation();
 
-  const fee = searchParams.get('fee');
+  const fee = searchParams.get('fee') || location.state?.fee;
+  const planDetails = location.state?.planDetails;
+  const isSubscription = location.state?.bookingData?.type === 'subscription';
 
   useEffect(() => {
     if (!loading && !user) {
@@ -118,11 +121,17 @@ const PaymentPage = () => {
       return;
     }
     
-    const pendingBooking = localStorage.getItem('pendingBooking');
-    if (pendingBooking) {
-      setBookingData(JSON.parse(pendingBooking));
+    // Handle subscription data from location state
+    if (location.state?.bookingData) {
+      setBookingData(location.state.bookingData);
+    } else {
+      // Handle session booking data from localStorage
+      const pendingBooking = localStorage.getItem('pendingBooking');
+      if (pendingBooking) {
+        setBookingData(JSON.parse(pendingBooking));
+      }
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, location.state]);
 
   const handlePaymentSuccess = () => {
     setPaymentSuccess(true);
@@ -151,8 +160,13 @@ const PaymentPage = () => {
         <div className="bg-white rounded-2xl shadow-lg p-8 text-center max-w-md">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
-          <p className="text-gray-600 mb-4">Your session has been booked successfully.</p>
-          <p className="text-sm text-gray-500">Redirecting to home page...</p>
+          <p className="text-gray-600 mb-4">
+            {isSubscription 
+              ? 'Your subscription has been activated successfully.' 
+              : 'Your session has been booked successfully.'
+            }
+          </p>
+          <p className="text-sm text-gray-500">Redirecting to dashboard...</p>
         </div>
       </div>
     );
@@ -170,10 +184,18 @@ const PaymentPage = () => {
         </button>
 
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-green-600 to-purple-400 text-white p-6">
+          <div className={`bg-gradient-to-r ${
+            isSubscription 
+              ? 'from-purple-600 to-blue-600' 
+              : 'from-green-600 to-emerald-600'
+          } text-white p-6`}>
             <h1 className="text-2xl font-bold flex items-center">
-              <CreditCard className="w-6 h-6 mr-3 " />
-              Payment
+              {isSubscription ? (
+                <Crown className="w-6 h-6 mr-3" />
+              ) : (
+                <CreditCard className="w-6 h-6 mr-3" />
+              )}
+              {isSubscription ? 'Subscription Payment' : 'Session Payment'}
             </h1>
           </div>
 
@@ -181,20 +203,41 @@ const PaymentPage = () => {
             {bookingData ? (
               <>
                 <div className="mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Booking Summary</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                    {isSubscription ? 'Subscription Summary' : 'Booking Summary'}
+                  </h2>
                   <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-900">Session:</span>
-                      <span className="font-medium text-black">{bookingData.sessionTitle}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-900">Tutor:</span>
-                      <span className="font-medium text-black">{bookingData.tutorEmail}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-900">Student:</span>
-                      <span className="font-medium text-black">{bookingData.studentEmail}</span>
-                    </div>
+                    {isSubscription ? (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900">Plan:</span>
+                          <span className="font-medium text-black">{planDetails?.name}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900">Billing:</span>
+                          <span className="font-medium text-black">Monthly</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900">Features:</span>
+                          <span className="font-medium text-black">{planDetails?.features?.length} included</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900">Session:</span>
+                          <span className="font-medium text-black">{bookingData.sessionTitle}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900">Tutor:</span>
+                          <span className="font-medium text-black">{bookingData.tutorEmail}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-900">Student:</span>
+                          <span className="font-medium text-black">{bookingData.studentEmail}</span>
+                        </div>
+                      </>
+                    )}
                     <hr className="my-2" />
                     <div className="flex justify-between text-lg font-bold">
                       <span className='text-black'>Total Amount:</span>

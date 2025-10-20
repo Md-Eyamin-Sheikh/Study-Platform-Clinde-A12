@@ -18,6 +18,7 @@ import DashboardRouter from './Page/Dashboard/DashboardRouter.jsx';
 import AdminDashboard from './Page/Dashboard/Admin/AdminDashboard.jsx';
 import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
 import UpdateSession from './Page/Dashboard/Admin/UpdateSession.jsx';
+import TutorProfile from './Page/Home Page/Component/TutorProfile.jsx';
 
 // Admin components
 import AdminStats from './Page/Dashboard/Admin/AdminStats.jsx';
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "/details/:id",
         element:<DetalsPage/>
+      },
+      {
+        path: "/tutor-profile/:tutorId",
+        element: <TutorProfile/>
       },
       {
         path: "/payment",
