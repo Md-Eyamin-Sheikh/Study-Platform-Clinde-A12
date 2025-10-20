@@ -56,7 +56,8 @@ const BookedSessionDetail = ({ session, onBack }) => {
   const sessionDetails = session.sessionDetails;
 
   return (
-    <div>
+    <div className='bg-green-100 min-h-screen py-8'>
+      <div className='bg-green-100 max-w-7xl mx-auto p-6'>
       <button
         onClick={onBack}
         className="flex items-center text-gray-900 hover:text-gray-800 mb-6"
@@ -178,7 +179,10 @@ const BookedSessionDetail = ({ session, onBack }) => {
           )}
         </div>
       </div>
+      </div>
+
     </div>
+    
   );
 };
 

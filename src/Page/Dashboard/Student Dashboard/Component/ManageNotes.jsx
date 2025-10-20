@@ -91,8 +91,9 @@ const ManageNotes = () => {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Manage Personal Notes</h2>
+    <div className="bg-green-100">
+       <div className='bg-green-100 pt-6 md:p-6 md:mt-3 max-w-7xl mx-auto min-h-screen'>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2 p-3">Manage Personal Notes</h2>
       
       {notes.length === 0 ? (
         <div className="text-center py-8 text-gray-900">
@@ -165,6 +166,9 @@ const ManageNotes = () => {
         </div>
       )}
     </div>
+
+    </div>
+   
   );
 };
 

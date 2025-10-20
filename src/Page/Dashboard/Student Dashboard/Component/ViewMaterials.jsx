@@ -134,7 +134,7 @@ const ViewMaterials = () => {
   }
 
   return (
-    <div>
+    <div className='bg-green-100'>
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Study Materials</h2>
       
       {bookedSessions.length === 0 ? (

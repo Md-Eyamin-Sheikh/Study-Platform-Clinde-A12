@@ -45,45 +45,48 @@ const ViewBookedSessions = () => {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">My Booked Sessions</h2>
-      
-      {bookedSessions.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
-          No booked sessions found.
-        </div>
-      ) : (
-        <div className="grid gap-6">
-          {bookedSessions.map((booking) => (
-            <div key={booking._id} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {booking.sessionDetails?.title || booking.sessionTitle}
-                  </h3>
-                  <p className="text-gray-600 mb-2">
-                    Tutor: {booking.tutorEmail}
-                  </p>
-                  <p className="text-gray-600 mb-2">
-                    Fee: {booking.registrationFee === 0 ? 'Free' : `$${booking.registrationFee}`}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Booked on: {new Date(booking.bookedAt).toLocaleDateString()}
-                  </p>
+    <div className="bg-green-100 pt-4 lg:p-8 min-h-screen">
+      <div className='bg-green-100 max-w-7xl mx-auto'>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 p-3">My Booked Sessions</h2>
+        
+        {bookedSessions.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            No booked sessions found.
+          </div>
+        ) : (
+          <div className="grid gap-6">
+            {bookedSessions.map((booking) => (
+              <div key={booking._id} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      {booking.sessionDetails?.title || booking.sessionTitle}
+                    </h3>
+                    <p className="text-gray-600 mb-2">
+                      Tutor: {booking.tutorEmail}
+                    </p>
+                    <p className="text-gray-600 mb-2">
+                      Fee: {booking.registrationFee === 0 ? 'Free' : `$${booking.registrationFee}`}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Booked on: {new Date(booking.bookedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedSession(booking)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Details
+                  </button>
                 </div>
-                <button
-                  onClick={() => setSelectedSession(booking)}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center"
-                >
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Details
-                </button>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
+   
   );
 };
 

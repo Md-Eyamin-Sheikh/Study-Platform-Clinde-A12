@@ -5,7 +5,7 @@ const Dashboard = () => {
   const { user, role } = useContext(AuthContext);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-green-100 pt-20">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
           Welcome, {user?.displayName || user?.email}
