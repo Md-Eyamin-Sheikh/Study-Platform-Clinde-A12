@@ -19,6 +19,7 @@ import AdminDashboard from './Page/Dashboard/Admin/AdminDashboard.jsx';
 import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
 import UpdateSession from './Page/Dashboard/Admin/UpdateSession.jsx';
 import TutorProfile from './Page/Home Page/Component/TutorProfile.jsx';
+import ProfilePage from './Page/Dashboard/ProfilePage.jsx';
 
 // Admin components
 import AdminStats from './Page/Dashboard/Admin/AdminStats.jsx';
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardRouter/>
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage/>
       },
      
 
