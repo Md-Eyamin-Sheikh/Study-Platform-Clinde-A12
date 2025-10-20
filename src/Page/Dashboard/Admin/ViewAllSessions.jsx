@@ -130,7 +130,8 @@ const ViewAllSessions = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className='bg-green-100'>
+      <div className="p-6 bg-green-100 min-h-screen max-w-7xl mx-auto py-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -315,6 +316,8 @@ const ViewAllSessions = () => {
         sessionTitle={selectedSession?.title}
       />
     </div>
+    </div>
+    
   );
 };
 

@@ -226,7 +226,8 @@ const AdminStats = () => {
   }
 
   return (
-    <div className="p-6 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen">
+    <div className='bg-green-100'>
+      <div className="p-6 bg-gradient-to-br from-green-100  to-green-100 min-h-screen max-w-7xl mx-auto py-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -372,7 +373,9 @@ const AdminStats = () => {
           ))}
         </div>
       </motion.div>
+      </div>
     </div>
+    
   );
 };
 

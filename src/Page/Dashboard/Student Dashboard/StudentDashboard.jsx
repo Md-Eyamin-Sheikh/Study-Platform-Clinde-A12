@@ -18,9 +18,9 @@ const StudentDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-green-100 py-4 sm:py-8">
+    <div className="min-h-screen bg-green-100 py-4 ">
       <div className="max-w-7xl mx-auto px-2 sm:px-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 pt-5">
           <h1 className="text-xl sm:text-3xl font-bold text-gray-900 px-2">Student Dashboard</h1>
           
           {user && (
@@ -62,7 +62,7 @@ const StudentDashboard = () => {
             </nav>
           </div>
           
-          <div className="p-3 sm:p-6">
+          <div className="p-3 sm:p-6 bg-green-100 min-h-screen">
             {activeTab === 'booked' && <ViewBookedSessions />}
             {activeTab === 'create-note' && <CreateNote />}
             {activeTab === 'manage-notes' && <ManageNotes />}

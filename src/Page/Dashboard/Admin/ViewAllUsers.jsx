@@ -102,7 +102,7 @@ const ViewAllUsers = () => {
 
   if (loading) {
     return (
-      <div className="p-8">
+      <div className="p-8 bg-green-100 min-h-screen ">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -133,7 +133,8 @@ const ViewAllUsers = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
-    <div className="p-6">
+    <div className='bg-green-100'>
+      <div className="p-6 bg-green-100 min-h-screen max-w-7xl mx-auto pt-12">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -339,6 +340,9 @@ const ViewAllUsers = () => {
         </motion.div>
       )}
     </div>
+
+    </div>
+    
   );
 };
 

@@ -124,7 +124,8 @@ const ViewAllMaterials = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className='bg-green-100'>
+      <div className="py-6 max-w-7xl mx-auto bg-green-100 min-h-screen">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -277,6 +278,7 @@ const ViewAllMaterials = () => {
           <p className="text-gray-500">No materials found for the selected filter</p>
         </motion.div>
       )}
+    </div>
     </div>
   );
 };
