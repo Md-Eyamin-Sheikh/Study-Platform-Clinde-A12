@@ -97,12 +97,13 @@ const CreateSession = () => {
   };
 
   return (
-    <motion.div
+    <div className='bg-green-100 pt-6'>
+       <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-6"
-    >
+      className="space-y-6 max-w-7xl mx-auto py-10 bg-green-100 min-h-screen p-4 md:p-6"
+      >
       <motion.div variants={itemVariants}>
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Create Study Session</h2>
         <p className="text-gray-600">Fill in the details to create a new study session</p>
@@ -281,6 +282,8 @@ const CreateSession = () => {
         </motion.div>
       </motion.form>
     </motion.div>
+    </div>
+   
   );
 };
 

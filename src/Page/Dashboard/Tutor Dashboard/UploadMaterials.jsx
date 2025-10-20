@@ -125,13 +125,14 @@ const UploadMaterials = () => {
   };
 
   return (
-    <motion.div
+   <div className='bg-green-100 md:p-4 p-2' >
+     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-6"
-    >
-      <motion.div variants={itemVariants}>
+      className="space-y-6 max-w-7xl mx-auto py-10 bg-green-100 min-h-screen p-2 md:p-6"
+      >
+      <motion.div variants={itemVariants} className=''>
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Upload Materials</h2>
         <p className="text-gray-600">Upload study materials for your approved sessions</p>
       </motion.div>
@@ -301,6 +302,7 @@ const UploadMaterials = () => {
         </motion.div>
       )}
     </motion.div>
+   </div>
   );
 };
 

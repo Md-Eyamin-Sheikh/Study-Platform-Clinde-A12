@@ -43,7 +43,7 @@ const TutorDashboard = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-6"
+      className="min-h-screen bg-gradient-to-br from-green-100 to-indigo-100 p-4 md:p-6"
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -155,7 +155,7 @@ const DashboardOverview = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto py-10">
       <h2 className="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">

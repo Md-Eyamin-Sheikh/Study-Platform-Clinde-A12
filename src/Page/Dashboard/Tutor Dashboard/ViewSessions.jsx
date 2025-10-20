@@ -129,12 +129,14 @@ const ViewSessions = () => {
   };
 
   return (
-    <motion.div
+   
+    <div className='bg-green-100 md:p-6 p-2'>
+       <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-6"
-    >
+      className="space-y-6 max-w-7xl mx-auto pt-14 bg-green-100 min-h-screen p-2 md:p-6"
+      >
       <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">My Study Sessions</h2>
@@ -252,6 +254,7 @@ const ViewSessions = () => {
         </motion.div>
       )}
     </motion.div>
+    </div>
   );
 };
 

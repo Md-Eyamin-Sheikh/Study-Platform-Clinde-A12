@@ -157,12 +157,13 @@ const ViewMaterials = () => {
   };
 
   return (
-    <motion.div
+    <div className='bg-green-100 min-h-screen py-8'>
+        <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-6"
-    >
+      className="space-y-6 bg-green-100 max-w-7xl mx-auto py-10 p-2 md:p-6"
+      >
       <motion.div variants={itemVariants}>
         <h2 className="text-2xl font-bold text-gray-800 mb-2">My Materials</h2>
         <p className="text-gray-600">View, edit, and delete your uploaded materials</p>
@@ -304,6 +305,8 @@ const ViewMaterials = () => {
         </motion.div>
       )}
     </motion.div>
+    </div>
+  
   );
 };
 
