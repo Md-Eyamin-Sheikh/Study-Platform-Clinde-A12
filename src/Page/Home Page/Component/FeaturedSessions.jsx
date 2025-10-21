@@ -63,7 +63,7 @@ const FeaturedSessions = () => {
             >
               <div className="relative">
                 <img
-                  src={session.image || "https://i.postimg.cc/7Z8pmZfc/pexels-anastasia-shuraeva-8466903.jpg"}
+                  src={session.image || "https://i.postimg.cc/pr3Xqntn/Gemini-Generated-Image-ci5qlsci5qlsci5q.png"}
                   alt={session.title}
                   className="w-full h-48 object-cover rounded-t-xl"
                 />

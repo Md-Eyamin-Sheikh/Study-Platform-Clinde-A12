@@ -5,45 +5,77 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+import Numbar1 from "../../../assets/Photos/Numbar1.jpg";
+import Numbar2 from "../../../assets/Photos/Numbar2.jpg";
+import Numbar3 from "../../../assets/Photos/Numbar3.jpg";
+import Numbar4 from "../../../assets/Photos/Numbar4.jpg";
+import Numbar5 from "../../../assets/Photos/Numbar5.jpg";
+import Numbar6 from "../../../assets/Photos/Numbar6.jpg";
+import Numbar7 from "../../../assets/Photos/Numbar7.jpg";
+import Numbar8 from "../../../assets/Photos/Numbar8.jpg";
+
 const ImageSlider = () => {
   const images = [
-    "https://i.postimg.cc/7Z8pmZfc/pexels-anastasia-shuraeva-8466903.jpg",
-    "https://i.postimg.cc/jjCmjw9D/pexels-diego-romero-471613950-19147326.jpg",
-    "https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg",
-    "https://i.postimg.cc/9MC9pZhM/pexels-kimmi-jun-201206578-18506745.jpg",
-    "https://i.postimg.cc/fy6THQ9K/pexels-green-odette-232224115-32292148.jpg",
-    "https://i.postimg.cc/c18KnFYm/pexels-chuchuphinh-1164572.jpg",
-    "https://i.postimg.cc/vTRZhd9v/pang-yuhao-kd5cxw-ZOK4-unsplash.jpg",
-    "https://i.postimg.cc/76FpdHKf/pexels-max-fischer-5212336.jpg",
+    Numbar1,
+    Numbar2,
+    Numbar3,
+    Numbar4,
+    Numbar5,
+    Numbar6,
+    Numbar7,
+    Numbar8,
   ];
 
   return (
-    <div className="max-w-8xl bg-amber-50 mx-auto ">
+   <div className=" bg-green-50">
+     <div className="w-full mx-auto  bg-green-50 ">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 2500,
+          delay: 3000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
         pagination={{
           clickable: true,
+          dynamicBullets: true,
         }}
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
-        className="rounded-2xl shadow-lg"
+        loop={true}
+        speed={800}
+        className="rounded-2xl shadow-2xl"
+        breakpoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 1,
+            spaceBetween: 30,
+          },
+        }}
       >
         {images.map((src, index) => (
           <SwiperSlide key={index}>
-            <img
-              src={src}
-              alt={`slide-${index}`}
-              className="w-full h-[200px] md:h-[500px] object-cover rounded-2xl"
-            />
+            <div className="relative w-full h-[200px] sm:h-[350px] md:h-[500px] lg:h-[600px]">
+              <img
+                src={src}
+                alt={`Gallery image ${index + 1}`}
+                className="w-full h-full object-cover rounded-2xl"
+                loading="lazy"
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
     </div>
+   </div>
   );
 };
 
