@@ -22,7 +22,7 @@ const HeroSection = () => {
               Join thousands of students and expert tutors in collaborative study sessions. 
               Master new skills, share knowledge, and achieve your academic goals.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex  sm:flex-row gap-4">
               <Link to="/sessions">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
