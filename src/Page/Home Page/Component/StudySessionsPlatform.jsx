@@ -77,7 +77,7 @@ const StudySessionsPlatform = () => {
     const isOngoing = status === 'ongoing';
 
     return (
-      <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
+      <div className="bg-green-50 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
         <div className="p-6">
           {/* Status Badge */}
           <div className="flex justify-between items-start mb-4">
@@ -134,9 +134,9 @@ const StudySessionsPlatform = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-100  to-green-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-green-100 shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">

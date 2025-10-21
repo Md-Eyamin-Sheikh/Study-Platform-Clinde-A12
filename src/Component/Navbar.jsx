@@ -71,7 +71,7 @@ const Navbar = () => {
   const navLinks = getRoleBasedLinks();
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-green-300 shadow-md z-50">
+    <nav className=" w-full bg-green-300 shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-xl sm:text-2xl font-bold text-green-600 flex-shrink-0">

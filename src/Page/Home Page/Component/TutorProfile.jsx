@@ -64,7 +64,7 @@ const TutorProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Tutor Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,7 +99,7 @@ const TutorProfile = () => {
               </div>
             </div>
             
-            <div className="flex flex-col gap-3">
+            {/* <div className="flex flex-col gap-3">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -115,7 +115,7 @@ const TutorProfile = () => {
               >
                 Follow
               </motion.button>
-            </div>
+            </div> */}
           </div>
         </motion.div>
 
@@ -151,13 +151,13 @@ const TutorProfile = () => {
                   </div>
                 </div>
                 
-                <motion.button
+                {/* <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
                 >
                   Book Session
-                </motion.button>
+                </motion.button> */}
               </motion.div>
             ))}
           </div>

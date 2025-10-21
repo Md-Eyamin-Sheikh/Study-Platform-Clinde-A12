@@ -5,10 +5,10 @@ import Footer from '../Component/Footer';
 
 const MainRout = () => {
     return (
-        <div className='max-w-9xl'>
+        <div >
             <Navbar />
-                <div className='pt-12 max-w-9xl '>
-                <Outlet className='pt-12 max-w-9xl' />
+                <div >
+                <Outlet />
 
                 </div>
            

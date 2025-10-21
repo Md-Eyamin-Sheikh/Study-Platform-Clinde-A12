@@ -33,7 +33,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-16 bg-white ">
+    <section className="py-16 bg-green-50"> 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <motion.div
@@ -106,13 +106,13 @@ const FAQ = () => {
             <p className="text-gray-600 mb-4">
               Our support team is here to help you 24/7
             </p>
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
             >
               Contact Support
-            </motion.button>
+            </motion.button> */}
           </motion.div>
         </div>
       </div>

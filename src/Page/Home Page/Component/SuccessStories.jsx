@@ -97,7 +97,7 @@ const SuccessStories = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        {/* <div className="text-center mt-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -117,7 +117,7 @@ const SuccessStories = () => {
               Start Learning Now
             </motion.button>
           </motion.div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
