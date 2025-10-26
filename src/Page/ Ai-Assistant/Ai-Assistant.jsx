@@ -49,13 +49,20 @@ const AIAssistant = () => {
     setIsTyping(true);
 
     try {
-      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/chatbot`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: text }),
+      // const response = await fetch(`http://localhost:5000/api/chatbot`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ message: text }),
+      // });
+
+      const response = await fetch("https://study-hub-survar-a12.vercel.app/api/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
       });
+
 
       if (!response.ok) {
         throw new Error('Failed to get AI response');
