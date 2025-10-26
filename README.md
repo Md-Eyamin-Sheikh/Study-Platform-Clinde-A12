@@ -2,14 +2,14 @@
 
 ## 🎓 Modern Educational Platform for Collaborative Learning
 
-A comprehensive React-based web application that connects students and tutors for collaborative study sessions, featuring real-time session management, secure payments, and interactive learning materials.
+A comprehensive React-based web application that connects students and tutors for collaborative study sessions, featuring real-time session management, secure payments, interactive learning materials, and AI-powered assistance.
 
 ## 🔗 Live Site URL
 ```
 https://resilient-vacherin-ecfaf3.netlify.app/
 ```
 
-## 👨‍💼 Admin Credentials
+## 👨💼 Admin Credentials
 - **Email**: admin@gmail.com
 - **Password**: "Admin 2004"
 
@@ -33,6 +33,7 @@ npm run build
 • **Multi-Role Authentication System** - Secure login for Students, Tutors, and Admins with Firebase & JWT
 • **Interactive Study Sessions** - Browse, book, and manage collaborative study sessions with real-time status updates
 • **Secure Payment Integration** - Stripe-powered payment system for session bookings with authentication protection
+• **AI-Powered Assistant** - Integrated DeepSeek AI chatbot for educational guidance and platform support
 • **Comprehensive Admin Dashboard** - Complete platform management with user roles, session approval, and analytics
 • **Tutor Management Portal** - Create sessions, upload materials, view bookings, and handle rejections with feedback
 • **Student Learning Hub** - Access booked sessions, view study materials, create notes, and track progress
@@ -58,9 +59,20 @@ npm run build
 ### Backend Integration
 - **API Client**: Fetch API
 - **Payment**: Stripe Elements 4
+- **AI Assistant**: OpenRouter API with DeepSeek R1 Model
 - **File Storage**: Google Drive API
 - **Real-time Updates**: RESTful APIs
 - **Database**: Firebase Firestore
+
+## 🤖 AI Assistant Features
+
+- **Intelligent Chatbot**: Powered by DeepSeek R1 model via OpenRouter API
+- **Educational Context**: Specialized knowledge about StudyHub platform features
+- **Real-time Responses**: Instant AI-generated answers to user queries
+- **Voice & Image Support**: Voice recording and image upload capabilities
+- **Quick Actions**: Pre-defined buttons for common questions
+- **Mobile Optimized**: Responsive design with touch-friendly interface
+- **Study Guidance**: Personalized study tips and educational advice
 
 ## 🎨 Design Features
 
@@ -80,26 +92,29 @@ npm run build
 
 ## 🔐 User Roles & Permissions
 
-### 👨‍🎓 Student
+### 👨🎓 Student
 - Browse and search study sessions
 - Book sessions with secure payment
 - Access study materials for booked sessions
 - Create and manage personal notes
 - View booking history and session details
+- Chat with AI Assistant for study guidance
 
-### 👨‍🏫 Tutor
+### 👨🏫 Tutor
 - Create and manage study sessions
 - Upload study materials and resources
 - View session bookings and student lists
 - Handle session updates and modifications
 - Receive and respond to admin feedback
+- Use AI Assistant for tutoring tips
 
-### 👨‍💼 Admin
+### 👨💼 Admin
 - Approve/reject study sessions with feedback
 - Manage user roles and permissions
 - View platform analytics and statistics
 - Monitor all sessions and materials
 - Handle user management and moderation
+- Access AI Assistant for platform management
 
 ## 🚀 Key Features
 
@@ -123,6 +138,13 @@ npm run build
 - Payment history and receipts
 - Authentication-protected payments
 - Booking confirmation system
+
+### AI Assistant
+- DeepSeek R1 model integration
+- Educational context awareness
+- Voice and image input support
+- Real-time chat interface
+- Study tips and guidance
 
 ### Admin Dashboard
 - User management with role updates
@@ -148,6 +170,7 @@ CollaborativeStudyPlatform/
 │   │   │   ├── Tutor Dashboard/ # Tutor tools
 │   │   │   └── Student Dashboard/ # Student portal
 │   │   ├── Home Page/     # Landing and sessions
+│   │   ├── Ai-Assistant/  # AI Chatbot interface
 │   │   └── PaymentPage.jsx # Stripe integration
 │   ├── providers/         # Context providers
 │   ├── MainRout/          # Route configurations
@@ -158,7 +181,6 @@ CollaborativeStudyPlatform/
 └── README.md          # This file
 ```
 
-
 ## 🌐 API Integration
 
 The frontend integrates with the StudyHub backend server for:
@@ -167,6 +189,7 @@ The frontend integrates with the StudyHub backend server for:
 - Payment processing
 - Material upload and retrieval
 - Admin dashboard functionality
+- AI chatbot responses
 
 ## 📱 Mobile Optimization
 
@@ -192,8 +215,6 @@ The application is deployed and optimized for:
 - **Build Optimization** - Vite build system for optimal performance
 - **Mobile Responsive** - PWA-ready with mobile navigation
 
-
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -202,6 +223,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Firebase for authentication services
 - Stripe for payment processing
+- OpenRouter & DeepSeek for AI capabilities
 - Tailwind CSS for styling framework
 - Framer Motion for animations
 - React community for excellent documentation

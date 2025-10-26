@@ -49,35 +49,24 @@ const AIAssistant = () => {
     setIsTyping(true);
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Generate contextual response based on StudyHub features
-      let botResponse = '';
-      const lowerText = text.toLowerCase();
-      
-      if (lowerText.includes('session') || lowerText.includes('study')) {
-        botResponse = `Great question about study sessions! StudyHub offers various collaborative study sessions including Mathematics, Science, Programming, Languages, and more. You can browse sessions on our homepage, book sessions with qualified tutors, or create your own study groups.`;
-      } else if (lowerText.includes('tutor') || lowerText.includes('teacher')) {
-        botResponse = `Our platform connects you with experienced tutors across different subjects. You can view tutor profiles, check their ratings and reviews, see their availability, and book sessions directly. All tutors are verified and have expertise in their respective fields.`;
-      } else if (lowerText.includes('book') || lowerText.includes('join')) {
-        botResponse = `To book a study session: 1) Browse available sessions, 2) Click on session details, 3) Check tutor profile and reviews, 4) Select your preferred time slot, 5) Complete payment via Stripe, 6) Join the session at scheduled time.`;
-      } else if (lowerText.includes('payment') || lowerText.includes('price')) {
-        botResponse = `StudyHub uses secure Stripe payment processing. Session fees vary by subject and tutor experience. You can see pricing before booking, and all payments are protected. We also offer refunds for cancelled sessions according to our policy.`;
-      } else if (lowerText.includes('material') || lowerText.includes('resource')) {
-        botResponse = `Study materials are available for booked sessions. Tutors can upload PDFs, documents, videos, and other resources. Students can also create and manage personal notes, access shared materials, and download resources for offline study.`;
-      } else if (lowerText.includes('dashboard') || lowerText.includes('profile')) {
-        botResponse = `Your dashboard provides access to: booked sessions, study materials, personal notes, tutor profiles (for tutors), session management, and account settings. Students, tutors, and admins each have customized dashboard experiences.`;
-      } else if (lowerText.includes('tip') || lowerText.includes('advice')) {
-        botResponse = `Here are some effective study tips: 1) Set specific goals for each session, 2) Prepare questions in advance, 3) Take active notes during sessions, 4) Review materials after sessions, 5) Practice regularly, 6) Join study groups for collaborative learning.`;
-      } else {
-        botResponse = `Thanks for your question! I'm here to help with StudyHub features like finding study sessions, booking tutors, accessing materials, managing your dashboard, and providing study guidance. What would you like to know more about?`;
+      const response = await fetch(`https://study-hub-survar-a12.vercel.app/api/chatbot`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: text }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
       }
+
+      const data = await response.json();
       
       const botMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        content: botResponse,
+        content: data.response,
         timestamp: new Date(),
       };
       
