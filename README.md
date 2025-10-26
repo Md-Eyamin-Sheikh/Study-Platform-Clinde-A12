@@ -13,6 +13,21 @@ https://resilient-vacherin-ecfaf3.netlify.app/
 - **Email**: admin@gmail.com
 - **Password**: "Admin 2004"
 
+## 🚀 Quick Start
+```bash
+# Clone the repository
+git clone <repository-url>
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
 ## 🌟 Website Characteristics
 
 • **Multi-Role Authentication System** - Secure login for Students, Tutors, and Admins with Firebase & JWT
@@ -27,23 +42,25 @@ https://resilient-vacherin-ecfaf3.netlify.app/
 • **Real-time Feedback System** - Session rejection with detailed feedback and resubmission capabilities
 • **Modern UI/UX Design** - Framer Motion animations, React Icons, and Tailwind CSS styling
 • **Protected Routes & Security** - Role-based access control and authentication-protected payment flows
+• **Mobile-First Navigation** - Bottom navigation bar for seamless mobile experience
 
 ## 🛠️ Technology Stack
 
 ### Frontend
-- **Framework**: React 18 with Vite
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: React Icons (Feather Icons)
-- **Routing**: React Router DOM
+- **Framework**: React 19 with Vite 7
+- **Styling**: Tailwind CSS 4 + DaisyUI 5
+- **Animations**: Framer Motion 12
+- **Icons**: Lucide React + React Icons 5
+- **Routing**: React Router DOM 7
 - **State Management**: Context API
-- **Authentication**: Firebase Auth + JWT
+- **Authentication**: Firebase Auth 12 + JWT
 
 ### Backend Integration
 - **API Client**: Fetch API
-- **Payment**: Stripe Elements
+- **Payment**: Stripe Elements 4
 - **File Storage**: Google Drive API
 - **Real-time Updates**: RESTful APIs
+- **Database**: Firebase Firestore
 
 ## 🎨 Design Features
 
@@ -122,6 +139,7 @@ CollaborativeStudyPlatform/
 │   ├── Component/           # Shared components
 │   │   ├── Navbar.jsx      # Responsive navigation
 │   │   ├── Footer.jsx      # Site footer
+│   │   ├── BottomNav.jsx   # Mobile navigation
 │   │   └── ProtectedRoute.jsx
 │   ├── Page/               # Main pages
 │   │   ├── Authentication/ # Login/Register
@@ -132,7 +150,8 @@ CollaborativeStudyPlatform/
 │   │   ├── Home Page/     # Landing and sessions
 │   │   └── PaymentPage.jsx # Stripe integration
 │   ├── providers/         # Context providers
-│   ├── routes/           # Route configurations
+│   ├── MainRout/          # Route configurations
+│   ├── Firbas/           # Firebase config
 │   └── main.jsx         # App entry point
 ├── public/              # Static assets
 ├── package.json        # Dependencies
@@ -168,7 +187,10 @@ The frontend integrates with the StudyHub backend server for:
 ## 🚀 Deployment
 
 The application is deployed and optimized for:
-- **Netlify** 
+- **Netlify** - Live production deployment
+- **Environment Variables** - Properly configured for production
+- **Build Optimization** - Vite build system for optimal performance
+- **Mobile Responsive** - PWA-ready with mobile navigation
 
 
 

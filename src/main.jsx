@@ -18,6 +18,7 @@ import DashboardRouter from './Page/Dashboard/DashboardRouter.jsx';
 import AdminDashboard from './Page/Dashboard/Admin/AdminDashboard.jsx';
 import StudySessionsPlatform from './Page/Home Page/Component/StudySessionsPlatform.jsx';
 import UpdateSession from './Page/Dashboard/Admin/UpdateSession.jsx';
+import AIAssistant from './Page/ Ai-Assistant/Ai-Assistant.jsx';
 import TutorProfile from './Page/Home Page/Component/TutorProfile.jsx';
 import ProfilePage from './Page/Dashboard/ProfilePage.jsx';
 
@@ -39,6 +40,9 @@ import CreateNote from './Page/Dashboard/Student Dashboard/Component/CreateNote.
 import ManageNotes from './Page/Dashboard/Student Dashboard/Component/ManageNotes.jsx';
 import ViewMaterials1 from './Page/Dashboard/Student Dashboard/Component/ViewMaterials.jsx';
 
+// Ai assistant
+import AiAssistant from './Page/ Ai-Assistant/Ai-Assistant.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -49,6 +53,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage/>
       },
+      
       {
         path: "/login",
         element: <LoginPage/>
@@ -154,7 +159,11 @@ const router = createBrowserRouter([
       
       
     ]
-  }
+  },
+  {
+    path: "/ai-assistant",
+    element: <AIAssistant/>
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(

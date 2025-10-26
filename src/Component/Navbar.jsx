@@ -27,12 +27,14 @@ const Navbar = () => {
 
   // Role-based navigation links based on main.jsx routes
   const getRoleBasedLinks = () => {
-    const baseLink = { to: "/", icon: FiHome, text: "Home" };
+    const homeLink = { to: "/", icon: FiHome, text: "Home" };
+    const aiLink = { to: "/ai-assistant", icon: FiHome, text: "AI Assistant" };
     
     if (!user) {
       return [
-        baseLink,
+        homeLink,
         { to: "/sessions", icon: BookOpen, text: "Study Sessions" },
+        aiLink,
         { to: "/login", icon: FiLogIn, text: "Login" }
       ];
     }
@@ -40,30 +42,33 @@ const Navbar = () => {
     switch (role?.toLowerCase()) {
       case 'admin':
         return [
-          baseLink,
+          homeLink,
           { to: "/adminStats", icon: BarChart3, text: "Admin Stats" },
           { to: "/viewAllusers", icon: Users, text: "View All Users" },
           { to: "/viewAllsessions", icon: BookOpen, text: "View All Sessions" },
-          { to: "/viewAllmaterials", icon: FileText, text: "View All Materials" }
+          { to: "/viewAllmaterials", icon: FileText, text: "View All Materials" },
+          aiLink
         ];
       
       case 'tutor':
         return [
-          baseLink,
+          homeLink,
           { to: "/create-session", icon: Edit, text: "Create Session" },
           { to: "/view-sessions", icon: Eye, text: "View Sessions" },
           { to: "/upload-materials", icon: Upload, text: "Upload Materials" },
-          { to: "/view-materials", icon: Folder, text: "View Materials" }
+          { to: "/view-materials", icon: Folder, text: "View Materials" },
+          aiLink
         ];
       
       case 'student':
       default:
         return [
-          baseLink,
+          homeLink,
           { to: "/sessions", icon: BookOpen, text: "Study Sessions" },
           { to: "/view-booked-sessions", icon: Eye, text: "Booked Sessions" },
           { to: "/create-note", icon: Edit, text: "Create Note" },
-          { to: "/manage-notes", icon: FileText, text: "Manage Notes" }
+          { to: "/manage-notes", icon: FileText, text: "Manage Notes" },
+          aiLink
         ];
     }
   };

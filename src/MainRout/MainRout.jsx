@@ -17,11 +17,11 @@ const MainRout = () => {
             case 'sessions':
                 navigate('/sessions');
                 break;
+            case 'ai-assistant':
+                navigate('/ai-assistant');
+                break;
             case 'dashboard':
                 navigate('/dashboard');
-                break;
-            case 'tutors':
-                navigate('/sessions');
                 break;
             case 'profile':
                 navigate('/profile');

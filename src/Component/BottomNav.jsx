@@ -1,12 +1,12 @@
-import { Home, BookOpen, Plus, Users, User } from 'lucide-react';
+import { Home, BookOpen, Plus, Users, User, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BottomNav = ({ activeTab, onTabChange }) => {
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, path: '/' },
     { id: 'sessions', label: 'Sessions', icon: BookOpen, path: '/sessions' },
-    { id: 'dashboard', label: 'Dashboard', icon: Plus, path: '/dashboard', highlight: true },
-    { id: 'tutors', label: 'Tutors', icon: Users, path: '/sessions' },
+    { id: 'ai-assistant', label: 'AI Help', icon: Bot, path: '/ai-assistant', highlight: true },
+    { id: 'dashboard', label: 'Dashboard', icon: Plus, path: '/dashboard' },
     { id: 'profile', label: 'Profile', icon: User, path: '/profile' }
   ];
 
