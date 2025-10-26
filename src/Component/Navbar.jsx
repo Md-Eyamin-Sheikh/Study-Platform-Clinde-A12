@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, BarChart3, Users, FileText, BookOpen, Upload, Eye, Edit, Folder } from "lucide-react";
+import { Menu, X, ChevronDown, BarChart3, Users, FileText, BookOpen, Upload, Eye, Edit, Folder, Bot } from "lucide-react";
 import { FiHome, FiLogIn, FiUserPlus, FiLogOut, FiUser } from "react-icons/fi";
 import Swal from "sweetalert2";
 import { AuthContext } from "../providers/AuthProvider";
@@ -28,7 +28,7 @@ const Navbar = () => {
   // Role-based navigation links based on main.jsx routes
   const getRoleBasedLinks = () => {
     const homeLink = { to: "/", icon: FiHome, text: "Home" };
-    const aiLink = { to: "/ai-assistant", icon: FiHome, text: "AI Assistant" };
+    const aiLink = { to: "/ai-assistant", icon: Bot, text: "AI Assistant" };
     
     if (!user) {
       return [
