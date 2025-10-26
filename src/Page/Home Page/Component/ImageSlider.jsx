@@ -45,7 +45,7 @@ const ImageSlider = () => {
         modules={[Autoplay, Pagination, Navigation]}
         loop={true}
         speed={800}
-        className="rounded-2xl shadow-2xl"
+        className="rounded-2xl "
         breakpoints={{
           320: {
             slidesPerView: 1,
