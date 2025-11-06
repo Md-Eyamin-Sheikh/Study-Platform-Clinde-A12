@@ -46,7 +46,7 @@ const Navbar = () => {
           { to: "/adminStats", icon: BarChart3, text: "Admin Stats" },
           { to: "/viewAllusers", icon: Users, text: "View All Users" },
           { to: "/viewAllsessions", icon: BookOpen, text: "View All Sessions" },
-          { to: "/viewAllmaterials", icon: FileText, text: "View All Materials" },
+          // { to: "/viewAllmaterials", icon: FileText, text: "View All Materials" },
           aiLink
         ];
       
@@ -65,7 +65,7 @@ const Navbar = () => {
         return [
           homeLink,
           { to: "/sessions", icon: BookOpen, text: "Study Sessions" },
-          { to: "/view-booked-sessions", icon: Eye, text: "Booked Sessions" },
+          // { to: "/view-booked-sessions", icon: Eye, text: "Booked Sessions" },
           { to: "/create-note", icon: Edit, text: "Create Note" },
           { to: "/manage-notes", icon: FileText, text: "Manage Notes" },
           aiLink
@@ -142,6 +142,13 @@ const Navbar = () => {
                   />
                 )}
                 <span className="font-medium text-sm">{user.displayName || user.email}</span>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  role === 'admin' ? 'bg-red-100 text-red-800' :
+                  role === 'tutor' ? 'bg-blue-100 text-blue-800' :
+                  'bg-green-100 text-green-800'
+                }`}>
+                  {role}
+                </span>
                 <ChevronDown size={12} className={`transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
               </motion.button>
 
