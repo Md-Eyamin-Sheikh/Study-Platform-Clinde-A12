@@ -2,17 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Star, Clock, Users, ArrowRight } from 'lucide-react';
+import Numbar1 from '../../../assets/Photos/Numbar1.jpg';
+import Numbar2 from '../../../assets/Photos/Numbar2.jpg';
+import Numbar3 from '../../../assets/Photos/Numbar3.jpg';
 
 const FeaturedSessions = () => {
   const [featuredSessions, setFeaturedSessions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const localImages = [Numbar1, Numbar2, Numbar3];
 
   useEffect(() => {
     const fetchFeaturedSessions = async () => {
       try {
         const response = await fetch('https://study-hub-survar-a12.vercel.app/data');
         const data = await response.json();
-        setFeaturedSessions(data.slice(0, 3));
+        const sessionsWithImages = data.slice(0, 3).map((session, index) => ({
+          ...session,
+          image: localImages[index] || localImages[0]
+        }));
+        setFeaturedSessions(sessionsWithImages);
       } catch (error) {
         console.error('Error fetching sessions:', error);
       } finally {
@@ -63,7 +72,7 @@ const FeaturedSessions = () => {
             >
               <div className="relative">
                 <img
-                  src={session.image || "https://i.postimg.cc/pr3Xqntn/Gemini-Generated-Image-ci5qlsci5qlsci5q.png"}
+                  src={session.image}
                   alt={session.title}
                   className="w-full h-48 object-cover rounded-t-xl"
                 />

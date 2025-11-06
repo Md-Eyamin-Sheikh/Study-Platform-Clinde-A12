@@ -84,7 +84,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center ">
           <AnimatePresence mode="wait">
             {navLinks.map((link, index) => (
               <motion.div
@@ -149,7 +149,7 @@ const Navbar = () => {
                 }`}>
                   {role}
                 </span>
-                <ChevronDown size={16} className={`transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={12} className={`transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
               </motion.button>
 
               <AnimatePresence>

@@ -18,7 +18,7 @@ const HomePage = () => {
     return (
         <div className='w-full'>
             
-            <ImageSlider/>
+            {/* <ImageSlider/> */}
             <HeroSection/>
             <FeaturedSessions/>
             {/* <RecentSessions/> */}
