@@ -84,7 +84,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center ">
+        <div className="hidden lg:flex items-center gap-x-2">
           <AnimatePresence mode="wait">
             {navLinks.map((link, index) => (
               <motion.div
@@ -142,13 +142,6 @@ const Navbar = () => {
                   />
                 )}
                 <span className="font-medium text-sm">{user.displayName || user.email}</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  role === 'admin' ? 'bg-red-100 text-red-800' :
-                  role === 'tutor' ? 'bg-blue-100 text-blue-800' :
-                  'bg-green-100 text-green-800'
-                }`}>
-                  {role}
-                </span>
                 <ChevronDown size={12} className={`transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
               </motion.button>
 

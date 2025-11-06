@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Star, BookOpen, Users } from 'lucide-react';
+import Numbar4 from '../../../assets/Photos/Numbar4.jpg';
+import Numbar5 from '../../../assets/Photos/Numbar5.jpg';
+import Numbar6 from '../../../assets/Photos/Numbar6.jpg';
+import Numbar7 from '../../../assets/Photos/Numbar7.jpg';
 
 const PopularTutors = () => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const localImages = [Numbar4, Numbar5, Numbar6, Numbar7];
 
   useEffect(() => {
     const fetchTutors = async () => {
@@ -25,7 +31,7 @@ const PopularTutors = () => {
               rating: (4.5 + Math.random() * 0.4).toFixed(1),
               students: Math.floor(Math.random() * 1000) + 500,
               sessions: Math.floor(Math.random() * 50) + 20,
-              image: session.image || `https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg`
+              image: localImages[tutorMap.size % localImages.length]
             });
           }
         });
@@ -33,7 +39,7 @@ const PopularTutors = () => {
         setTutors(Array.from(tutorMap.values()).slice(0, 4));
       } catch (error) {
         console.error('Error fetching tutors:', error);
-        // Fallback data
+        // Fallback data with local images
         setTutors([
           {
             id: 1,
@@ -42,7 +48,7 @@ const PopularTutors = () => {
             rating: 4.9,
             students: 1250,
             sessions: 89,
-            image: "https://i.postimg.cc/3RTXczg3/pexels-hson-33852291.jpg"
+            image: localImages[0]
           },
           {
             id: 2,
@@ -51,7 +57,7 @@ const PopularTutors = () => {
             rating: 4.8,
             students: 980,
             sessions: 67,
-            image: "https://i.postimg.cc/9MC9pZhM/pexels-kimmi-jun-201206578-18506745.jpg"
+            image: localImages[1]
           }
         ]);
       } finally {

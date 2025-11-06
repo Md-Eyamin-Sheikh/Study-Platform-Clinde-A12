@@ -187,11 +187,11 @@ const DetailsPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8">
+    <div className="min-h-screen  bg-green-100 py-8">
       <div className="max-w-7xl mx-auto px-4">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
           {/* Header */}
-          <div className="bg-green-700 text-white p-8">
+          <div className="bg-green-500 text-white p-8">
             <button
               onClick={() => setCurrentPage('sessions')}
               className="flex items-center text-white/80 hover:text-white mb-4 transition-colors"
@@ -298,7 +298,7 @@ const DetailsPage = () => {
                 </div>
 
                 <div className="flex items-center">
-                  <Award className="w-5 h-5 mr-3  text-purple-600" />
+                  <Award className="w-5 h-5 mr-3 text-green-600" />
                   <div>
                     <p className="text-sm text-gray-800">Level</p>
                     <p className="font-semibold text-gray-900">{session.level}</p>
@@ -324,16 +324,16 @@ const DetailsPage = () => {
               {canBook ? (
                 <button
                   onClick={() => handleBookSession(session)}
-                  className="bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-blue-700 transition-all duration-300 flex items-center"
+                  className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 flex items-center"
                 >
                   {session.registrationFee > 0 ? (
                     <>
-                      <CreditCard className="w-6 h-6 mr-2 text-gray-900" />
+                      <CreditCard className="w-6 h-6 mr-2" />
                       Book Now - ${session.registrationFee}
                     </>
                   ) : (
                     <>
-                      <CheckCircle className="w-6 h-6 text-gray-900 mr-2" />
+                      <CheckCircle className="w-6 h-6 mr-2" />
                       Book Now - Free
                     </>
                   )}
@@ -365,7 +365,7 @@ const DetailsPage = () => {
                     <div key={review._id} className="bg-gray-50 rounded-xl p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-green-700 rounded-full flex items-center justify-center text-white font-bold">
+                          <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
                             {review.studentName.charAt(0)}
                           </div>
                           <div className="ml-3">
