@@ -13,7 +13,15 @@ https://resilient-vacherin-ecfaf3.netlify.app/
 - **Email**: admin@gmail.com
 - **Password**: "Admin 2004"
 
-## 🚀 Quick Start
+## � Screenshots
+
+### Student Home Page
+![StudyHub Home Page - Learn Together, Grow Together](src/assets/docimg/StudentHome.png)
+
+### Admin Dashboard
+![StudyHub Admin Dashboard - Analytics & Management](src/assets/docimg/AdminDasbord.png)
+
+## �🚀 Quick Start
 ```bash
 # Clone the repository
 git clone <repository-url>
